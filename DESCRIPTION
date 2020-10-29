@@ -1,10 +1,10 @@
 Package: bootstrappR
 Type: Package
-Title: Bootstrap Analyses of Model Error
+Title: Bootstrap Analyses of Hydrological Model Error
 Version: 0.1.0
 Author: Martyn Clarke
 Maintainer: Guoqiang Tang <guoqiang.tang@usask.ca>
-Description: Analyses of errors in model outputs using jacknifing after bootstrapping.
+Description: Does jackknife after bootstrap analyses of the error in hydrological models by estimating the empirical probability distributions of NSE (Nash-Sutcliffe efficiency) and KGE (Kling-Gupta efficiency) estimators.
 License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 4.0), bootstrap, hydroGOF, ggplot2

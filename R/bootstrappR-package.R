@@ -1,7 +1,8 @@
-#' bootstrappR: Complete Stochastic Modelling Solution
+#' bootstrappR: Bootstrap Analyses of Hydrological Model Error
 #'
-#' bootstrappR is an R package which does bootstrap and jackknife analyses of the error in hydrological models by
-#' estimating the empirical probability distributions of NSE and KGE estimoors.
+#' bootstrappR is an R package which does jackknife after bootstrap analyses of the error in hydrological models by
+#' estimating the empirical probability distributions of NSE (Nash-Sutcliffe efficiency) and KGE (Kling-Gupta efficiency)
+#' estimators.
 #'
 #' @author \strong{Coded by:} Kevin Shook \email{kevin.shook@usask.ca} and...
 #' @author \strong{Conceptual design by:} Martyn Clark \email{martyn.clark@usask.ca}
