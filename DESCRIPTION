@@ -2,12 +2,13 @@ Package: bootstrappR
 Type: Package
 Title: Bootstrap Analyses of Hydrological Model Error
 Version: 0.1.0
-Author: Martyn Clarke
+Author: Martyn Clark
 Maintainer: Guoqiang Tang <guoqiang.tang@usask.ca>
 Description: Does jackknife after bootstrap analyses of the error in hydrological models by estimating the empirical probability distributions of NSE (Nash-Sutcliffe efficiency) and KGE (Kling-Gupta efficiency) estimators.
 License: GPL-3
 Encoding: UTF-8
-Depends: R (>= 4.0), bootstrap, hydroGOF, ggplot2
+Depends: R (>= 4.0)
+Imports: dplyr, hydroGOF, ggplot2, lubridate, stringr, ncdf4
 LazyData: true
 RoxygenNote: 7.1.0
 Suggests: 
