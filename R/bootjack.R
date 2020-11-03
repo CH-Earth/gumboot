@@ -1,36 +1,58 @@
 #' Bootstrap-jacknife of flow calibration statistics
 #'
-#' @param flows Required. Data frame of date, observed and simulated flows.
-#' @param stats Required. Vector of goodness of fit statistics to be used.
-#' @param nSampls Required. Number of samples for bootstrapping.
+#' @param flows Required. Data frame containing the date, observed and simulated flows. The variable names
+#' must be \option{date}, \option{obs}, and \option{sim}, respectively. The \code{date} must be a standard \R date.
+#' @param GOF_stat Required. Name(s) of simulation goodness of fit statistic(s) to be calculated. Currently both \code{NSE} and \code{KGE} are supported.
+#' @param nSample Required. Number of samples for bootstrapping.
 #' @param waterYearMonth Required. Month of beginning of water year. Default is \code{10}
 #' (October). If the calendar year is required, set \code{waterYearMonth = 13}.
 #' @param startYear Optional. First year of data to be used. If \code{NULL} then not used.
 #' @param endYear Optional. Last year of data to be used. If \code{NULL} then not used.
+#' @param minDays Required. Minimum number of days per year with valid (i.e. greater than 0) flows. Default is 100.
 #' @param minYears Required. Minimum number years to be used. Default is 10.
 #'
-#' @return Returns a list containing 1) \code{statsBoot} (array of bootstrap stats), and
-#' 2) \code{statsJack} (array of jackknife stats).
+#' @return Returns a data frame containing the goodness of fit statistic name (i.e. \option{NSE} and/or \option{KGE},
+#' and \code{seJack} = standard error of jacknife, \code{seBoot} = standard error of bootstrap, \code{p05, p50, p95},
+#' the 5th, 50th and 95th percentiles of the estimates, \code{score} = jackknife score,
+#' \code{biasJack} = bias of jackknife, \code{biasBoot} = bias of bootstap, \code{seJab} = standard error of jackknife after bootstrap.)
+#'
 #' @author Kevin Shook
 #' @seealso \code{\link{read_hcdn}}
 #' @export
+#' @importFrom stats cor median quantile runif sd var
 #' @import dplyr
 #' @import hydroGOF
+#' @import stringr
 #'
 #' @examples \dontrun{
 #' NSE_stats <- bootjack(flows)}
 bootjack <- function(flows,
-                     stats = "nse",
+                     GOF_stat = c("NSE", "KGE"),
                      nSample = 1000,
                      waterYearMonth = 10,
                      startYear = NULL,
                      endYear = NULL,
+                     minDays = 100,
                      minYears = 10) {
+
+  # check parameter values
+
+  if (sum(str_detect(string = GOF_stat, "KGE")) > 0)
+    KGE_is_present <- TRUE
+  else
+    KGE_is_present <- FALSE
+
+  if (sum(str_detect(string = GOF_stat, "NSE")) > 0)
+    NSE_is_present <- TRUE
+  else
+    NSE_is_present <- FALSE
+
+
 
   flows$year <- as.numeric(format(flows$date, format = "%Y"))
   flows$month <- as.numeric(format(flows$date, format = "%m"))
   flows$day <- as.numeric(format(flows$date, format = "%d"))
-  years <- unique(flows$year)
+  iyUnique <- unique(flows$year)
   nTrials <- length(endYear)
 
   # define the water years
@@ -38,16 +60,24 @@ bootjack <- function(flows,
   iyWater <- ifelse(flows$month >= waterYearMonth, flows$year + 1, flows$year)
   nYears <- length(unique(iyWater))
 
-  # get number of calibration statistics
-  nTarget  <- length(stats)
+  # define stats data frames
+  statsJack  <- data.frame("meanSim" = NA_real_, "meanObs"= NA_real_,
+                           "varSim"= NA_real_, "varObs"= NA_real_, "rProd"= NA_real_)
+  statsBoot  <- data.frame("meanSim" = NA_real_, "meanObs"= NA_real_,
+                            "varSim"= NA_real_, "varObs"= NA_real_, "rProd"= NA_real_)
+  if (NSE_is_present){
+    statsJack$NSE <- NA_real_
+    statsBoot$NSE <- NA_real_
+  }
 
-  # define stats
-  statsJack  <- array(-9999, c(7, nYears, nTarget))
-  statsBoot  <- array(-9999, c(7, nSample, nTarget))
+  if (KGE_is_present){
+    statsJack$KGE <- NA_real_
+    statsBoot$KGE <- NA_real_
+  }
 
-  # define years
-  yearsJack  <- array(-9999, c(nYears, nTarget))
-  yearsBoot  <- array(-9999, c(nYears, nSample, nTarget))
+  # define year arrays
+  yearsJack  <- array(-9999, c(nYears))
+  yearsBoot  <- array(-9999, c(nYears, nSample))
 
   #----------------------
   #  Check data validity
@@ -55,7 +85,6 @@ bootjack <- function(flows,
 
   # get pointer to valid values
   zeroVal <- -1e-10  # allow for zero values
- # flows$ixValid <- ((flows$obs > zeroVal) & (flows$sim > zeroVal))
   ixValid <- which((flows$obs > zeroVal) & (flows$sim > zeroVal))
 
   # get the number of days in each year
@@ -64,7 +93,7 @@ bootjack <- function(flows,
 
 
   # restrict attention to the water years with sufficient data
-  valid_years <- valid_days[valid_days$good_days > 100,]
+  valid_years <- valid_days[valid_days$good_days > minDays,]
 
   if (!is.null(startYear)){
     valid_years <- valid_years[valid_years$iyWater >= startYear,]
@@ -87,81 +116,182 @@ bootjack <- function(flows,
  n_sampling_strategies <- length(samplingStrategy)
  mSample               <- c(nyValid, nSample)
 
-  # loop through calibration targets i.e. NSE or KGE etc.
-  for (iTarget in 1:nTarget) {
-
-    # loop through sampling strategies
-    for (iStrategy in 1:n_sampling_strategies) {
-
+# loop through sampling strategies
+  for (iStrategy in 1:n_sampling_strategies) {
       # loop through samples
-      for (iSample in 1:mSample[iStrategy]) {
-
-        # -----
-        # ----- get the data subset (resample)...
-        # ---------------------------------------
-
-        # base case: use all days
-        if (iSample == 1) {
-          jxValid <- ixValid
-          # resample years
-        } else {
-          if (samplingStrategy[iStrategy] == 'jack') {
-            # ***** jackknife
-
-            # save the years
-            yearsJack[iSample, iTarget] = izUnique[iSample]
-
-            # get the desired indices
-            iyIndex <-  which(iyWater[ixValid] != izUnique[iSample])
-            jxValid <- ixValid[iyIndex]
-
-          } else {
-            # ***** bootstrap
-            # get a random selection of years
-            uRand   <- runif(nyValid)                  # uniform random number
-            ixYear  <- floor(uRand*nyValid - 1e-5) + 1
-            iyYear  <- izUnique[ixYear]
-
-            # save the years
-            yearsBoot[1:nyValid, iSample, iTarget] <- iyYear
-            iyIndex <- which(iyWater[ixValid] == iyYear[1])
-
-            for (iYear in 2:nyValid)
-              iyIndex <- c(iyIndex, which(iyWater[ixValid] == iyYear[iYear]))
-
-            jxValid <- ixValid[iyIndex]
-          }  # jackknife/bootstrap
-       }  # re-sampling years
-
-      # get valid data
-      qSimValid <- flows$sim[jxValid]
-      qObsValid <- flows$obs[jxValid]
-
+    for (iSample in 1:mSample[iStrategy]) {
       # -----
-      # ----- compute efficiency scores (annual)...
-      # -------------------------------------------
+      # ----- get the data subset (resample)...
+      # ---------------------------------------
 
-      # get the product moment statistics
-      meanSim <- mean(qSimValid)
-      meanObs <- mean(qObsValid)
-      varSim <- var(qSimValid)
-      varObs <- var(qObsValid)
-      rProd <- cor(qSimValid, qObsValid)
+      # base case: use all days
+      if (iSample == 1) {
+        jxValid <- ixValid
+        # resample years
+      } else {
+        if (samplingStrategy[iStrategy] == 'jack') {
+          # ***** jackknife
+          # save the years
+          yearsJack[iSample-1] = izUnique[iSample-1]
 
-      # get stats
+          # get the desired indices
+          iyIndex <-  which(iyWater[ixValid] != izUnique[iSample-1])
+          jxValid <- ixValid[iyIndex]
+
+        } else {
+          # ***** bootstrap
+          # get a random selection of years
+          uRand   <- runif(nyValid)                  # uniform random number
+          ixYear  <- floor(uRand*nyValid - 1e-5) + 1
+          iyYear  <- izUnique[ixYear]
+
+          # save the years
+          yearsBoot[1:nyValid, iSample-1] <- iyYear
+          iyIndex <- which(iyWater[ixValid] == iyYear[1])
+
+          for (iYear in 2:nyValid)
+            iyIndex <- c(iyIndex, which(iyWater[ixValid] == iyYear[iYear]))
+
+          jxValid <- ixValid[iyIndex]
+
+      }  # jackknife/bootstrap
+    }  # re-sampling years
+
+    # get valid data
+    qSimValid <- flows$sim[jxValid]
+    qObsValid <- flows$obs[jxValid]
+
+    # -----
+    # ----- compute efficiency scores (annual)...
+    # -------------------------------------------
+
+    # get the product moment statistics
+    meanSim <- mean(qSimValid)
+    meanObs <- mean(qObsValid)
+    varSim <- var(qSimValid)
+    varObs <- var(qObsValid)
+    rProd <- cor(qSimValid, qObsValid)
+
+    # get stats
+    statsJack[iSample,1:5] <- c(meanSim, meanObs, varSim, varObs, rProd)
+    statsBoot[iSample,1:5] <- c(meanSim, meanObs, varSim, varObs, rProd)
+
+    if (NSE_is_present) {
       nse <- NSE(qSimValid, qObsValid)
+
+      # save statistics
+      if (samplingStrategy[iStrategy] == 'jack')
+        statsJack$NSE[iSample] <- nse
+
+      if (samplingStrategy[iStrategy] == 'boot')
+        statsBoot$NSE[iSample] <- nse
+    }
+
+    if (KGE_is_present) {
       kge <- KGE(qSimValid, qObsValid)
 
       # save statistics
       if (samplingStrategy[iStrategy] == 'jack')
-        statsJack[,iSample,iTarget] <- c(meanSim, meanObs, varSim, varObs, rProd, nse, kge)
+        statsJack$KGE[iSample] <- kge
 
       if (samplingStrategy[iStrategy] == 'boot')
-        statsBoot[,iSample,iTarget] <- c(meanSim, meanObs, varSim, varObs, rProd, nse, kge)
+        statsBoot$KGE[iSample] <- kge
+    }
 
-    }   # looping through sampling strategies
-  } # target loop
- } # return values
- return_list <- list(statsJack = statsJack, statsBoot = statsBoot)
+   }   # looping through sampling strategies
+ }
 
+# now get error stats
+
+ errorStats <- data.frame("GOF_stat" = "","seJack" = NA_real_, "seBoot" = NA_real_, "p05" = NA_real_,
+                          "p50" = NA_real_, "p95" = NA_real_, "score" = NA_real_,
+                          "biasJack" = NA_real_, "biasBoot" = NA_real_, "seJab" = NA_real_)
+
+ # loop through stat types
+ numstats <- length(GOF_stat)
+ colnames <- names(statsJack)
+
+ if (KGE_is_present)
+   kge_col <- which(colnames == "KGE")
+
+ if (NSE_is_present)
+   nse_col <- which(colnames == "NSE")
+
+ for (iPlot in 1:numstats) {
+   # get the data
+   if(GOF_stat[iPlot] == "NSE")
+     ixPos <- nse_col
+
+   if(GOF_stat[iPlot] == "KGE")
+     ixPos <- kge_col
+
+   # get the data
+   xJack <- statsJack[, ixPos]
+   xBoot <- statsBoot[, ixPos]
+
+   # rank the data
+   iSort <- order(xJack)
+
+   # extract the score
+   score  <- xJack[1]
+
+   # extract the Jackknife and bootstrap estimates
+   zJack  <- xJack[1:nYears]
+   zBoot  <- xBoot[1:nSample]
+
+   # get the valid samples
+   ixJack <- which(zJack > -9998)
+   nJack <- length(ixJack)
+
+   # get the mean of all Jackknife samples
+   jackMean <- mean(zJack)
+
+   # get the jackknife estimates
+   jackScore <- (nJack * score) - (nJack-1) * jackMean
+   sumSqErr  <- (nJack-1) * sum((jackMean - zJack[ixJack])^2)
+   seJack    <- sqrt(sumSqErr/nJack)              # standard error of the Jackknife estimate (==. 22)
+
+   # get the bootstrap estimates
+   ySample   <- zBoot[order(zBoot)]
+   seBoot    <- sd(zBoot)  # ==. 23
+   p05       <- quantile(ySample, 0.05)
+   p50       <- median(ySample)
+   p95       <- quantile(ySample, 0.95)
+
+   # get the bias
+   biasJack  <- (nJack- 1) * (jackMean - score)
+   biasBoot  <- mean(zBoot) - score
+
+   # **** get the standard error of the confidence intervals
+   jabData   <- vector("numeric", nYears)            # JAB (Jackknife-After-Bootstrap)
+   for (iYear in 1:nYears) {
+     # get the number of times iyUnique[iYear] is used in each sample
+     matchYear <- vector("integer", nSample)
+     for (iSample in 1:nSample) {
+       ixMatch <- which(yearsBoot[,iSample] == iyUnique[iYear]) #eqs. 24,25
+       nMatch <- length(ixMatch)
+       matchYear[iSample] <- nMatch
+     } # looping through samples
+
+     # compute statistics where the year is excluded
+     ixMissing <- which(matchYear == 0) # indices of the bootstap samples when a given year is missing
+     nMissing <- length(ixMissing)
+     xSample   <- zBoot[ixMissing]
+     ySample   <- xSample[order(xSample)]
+     p05jack   <- quantile(ySample, 0.05)
+     p95jack   <- quantile(ySample, 0.95)
+     jabData[iYear] <- p95jack - p05jack          # data used in the jackknife
+
+   }  # looping through years
+
+   # get the jackknife estimates
+   jabMean   <- mean(jabData)
+   sumSqErr  <- (nYears-1)*sum((jabMean - jabData)^2)
+   seJab      <- sqrt(sumSqErr/nYears) # standard error of the bootstrap estimate
+
+   # save errors
+   errorStats[iPlot,] <- c(GOF_stat[iPlot], seJack, seBoot, p05, p50, p95, score, biasJack, biasBoot, seJab)
+
+}  # looping through plots
+ return(errorStats)
 }

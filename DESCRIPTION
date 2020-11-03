@@ -8,7 +8,7 @@ Description: Does jackknife after bootstrap analyses of the error in hydrologica
 License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 4.0)
-Imports: dplyr, hydroGOF, ggplot2, lubridate, stringr, ncdf4
+Imports:  stats, dplyr, hydroGOF, ggplot2, lubridate, stringr, ncdf4
 LazyData: true
 RoxygenNote: 7.1.0
 Suggests: 

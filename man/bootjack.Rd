@@ -6,18 +6,22 @@
 \usage{
 bootjack(
   flows,
-  stats = "nse",
+  GOF_stat = c("NSE", "KGE"),
   nSample = 1000,
   waterYearMonth = 10,
   startYear = NULL,
   endYear = NULL,
+  minDays = 100,
   minYears = 10
 )
 }
 \arguments{
-\item{flows}{Required. Data frame of date, observed and simulated flows.}
+\item{flows}{Required. Data frame containing the date, observed and simulated flows. The variable names
+must be \option{date}, \option{obs}, and \option{sim}, respectively. The \code{date} must be a standard \R date.}
 
-\item{stats}{Required. Vector of goodness of fit statistics to be used.}
+\item{GOF_stat}{Required. Name(s) of simulation goodness of fit statistic(s) to be calculated. Currently both \code{NSE} and \code{KGE} are supported.}
+
+\item{nSample}{Required. Number of samples for bootstrapping.}
 
 \item{waterYearMonth}{Required. Month of beginning of water year. Default is \code{10}
 (October). If the calendar year is required, set \code{waterYearMonth = 13}.}
@@ -26,13 +30,15 @@ bootjack(
 
 \item{endYear}{Optional. Last year of data to be used. If \code{NULL} then not used.}
 
-\item{minYears}{Required. Minimum number years to be used. Default is 10.}
+\item{minDays}{Required. Minimum number of days per year with valid (i.e. greater than 0) flows. Default is 100.}
 
-\item{nSampls}{Required. Number of samples for bootstrapping.}
+\item{minYears}{Required. Minimum number years to be used. Default is 10.}
 }
 \value{
-Returns a list containing 1) \code{statsBoot} (array of bootstrap stats), and
-2) \code{statsJack} (array of jackknife stats).
+Returns a data frame containing the goodness of fit statistic name (i.e. \option{NSE} and/or \option{KGE},
+and \code{seJack} = standard error of jacknife, \code{seBoot} = standard error of bootstrap, \code{p05, p50, p95},
+the 5th, 50th and 95th percentiles of the estimates, \code{score} = jackknife score,
+\code{biasJack} = bias of jackknife, \code{biasBoot} = bias of bootstap, \code{seJab} = standard error of jackknife after bootstrap.)
 }
 \description{
 Bootstrap-jacknife of flow calibration statistics
