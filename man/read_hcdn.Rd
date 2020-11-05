@@ -27,3 +27,9 @@ Reads simulated and observed values from HCDN netcdf file for a single location
 flows <- read_hcdn(nc_file = "results_hcdn_flow.nc", hcdn = 1030500)
 }
 }
+\seealso{
+\code{\link{conus_hcdn_bootjack}}
+}
+\author{
+Kevin Shook
+}

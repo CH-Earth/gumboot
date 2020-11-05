@@ -47,7 +47,8 @@ bootjack <- function(flows,
   else
     NSE_is_present <- FALSE
 
-
+  # turn off dplyr message
+  options(dplyr.summarise.inform=F)
 
   flows$year <- as.numeric(format(flows$date, format = "%Y"))
   flows$month <- as.numeric(format(flows$date, format = "%m"))
@@ -88,7 +89,7 @@ bootjack <- function(flows,
   ixValid <- which((flows$obs > zeroVal) & (flows$sim > zeroVal))
 
   # get the number of days in each year
-  good_flows <- flows[flows$ixValid,]
+  good_flows <- flows[ixValid,]
   valid_days <- good_flows %>% group_by(iyWater) %>% summarise(good_days = n_distinct(date))
 
 
@@ -106,7 +107,10 @@ bootjack <- function(flows,
   nyValid <- nrow(valid_years)
 
   if (nyValid < minYears) {
-      stop("Too few years of valid data")
+    errorStats <- data.frame("GOF_stat" = "","seJack" = NA_real_, "seBoot" = NA_real_, "p05" = NA_real_,
+                             "p50" = NA_real_, "p95" = NA_real_, "score" = NA_real_,
+                             "biasJack" = NA_real_, "biasBoot" = NA_real_, "seJab" = NA_real_)
+    return(errorStats)
   }
 
   izUnique <- valid_years$iyWater
@@ -142,7 +146,7 @@ bootjack <- function(flows,
           # ***** bootstrap
           # get a random selection of years
           uRand   <- runif(nyValid)                  # uniform random number
-          ixYear  <- floor(uRand*nyValid - 1e-5) + 1
+          ixYear  <- floor(uRand*nyValid) + 1
           iyYear  <- izUnique[ixYear]
 
           # save the years
