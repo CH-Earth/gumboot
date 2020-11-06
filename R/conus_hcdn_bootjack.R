@@ -1,4 +1,4 @@
-#' Jackkife after bootstrap for all HCDN sites
+#' Jackknife after bootstrap for all HCDN sites
 #'
 #' @param hcdn_sites Required. Data frame of HCDN sites. Must contain a field called \option{hcdn_site"}. The data frame
 #' \code{hcdn_conus_sites} will work. You can subset this data frame if you want to use fewer sites.
@@ -29,6 +29,8 @@
 ##' }
 ##'
 #' @return
+#' @author Kevin Shook
+#' @seealso \code{\link{read_hcdn}}
 #' @export
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'

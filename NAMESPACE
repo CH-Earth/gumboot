@@ -2,6 +2,7 @@
 
 export(bootjack)
 export(conus_hcdn_bootjack)
+export(ggplot_estimate_uncertainties)
 export(read_hcdn)
 import(dplyr)
 import(ggplot2)

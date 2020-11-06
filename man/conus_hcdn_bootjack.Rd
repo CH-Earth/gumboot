@@ -2,7 +2,7 @@
 % Please edit documentation in R/conus_hcdn_bootjack.R
 \name{conus_hcdn_bootjack}
 \alias{conus_hcdn_bootjack}
-\title{Jackkife after bootstrap for all HCDN sites}
+\title{Jackknife after bootstrap for all HCDN sites}
 \usage{
 conus_hcdn_bootjack(
   hcdn_sites = NULL,
@@ -59,11 +59,17 @@ Returns a data frame containing the following variables:
 
 }
 \description{
-Jackkife after bootstrap for all HCDN sites
+Jackknife after bootstrap for all HCDN sites
 }
 \examples{
 \dontrun{
 hcdn <- conus_hcdn_bootjack(hcdn_sites = sites, NetCDF_file = "results_hcdn_flow.nc")
 }
 
+}
+\seealso{
+\code{\link{read_hcdn}}
+}
+\author{
+Kevin Shook
 }

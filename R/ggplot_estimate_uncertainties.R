@@ -1,0 +1,80 @@
+#' Plots uncertainties in model error estimates
+#'
+#' @param JAB_stats Required. Data frame of jackknife after boot statistics for a large number
+#' of model runs, as produced by \code{conus_hcdn_bootjack}.
+#' @param fill_colour Required. Color used to fill the plot of 2 x the Jackknife estimate of the standard error.
+#' @return Returns a \code{ggplot2} object of the plots, faceted by goodness of fit statistic, i.e. NSE/KGE.
+#' The confidence interval (difference between the 95^th^ and 5^th^ quantiles, and the value of
+#' 2 x the Bootstrap estimate of the standard error are plotted as lines. The values of
+#' 2 x the Jackknife estimate of the standard error are plotted as filled)
+#' @author Kevin Shook
+#' @seealso \code{\link{conus_hcdn_bootjack}}
+#' @export
+#' @import ggplot2
+
+#'
+#' @examples \dontrun{ p <- ggplot_estimate_uncertainties(all_stats, "orange")
+#' }
+ggplot_estimate_uncertainties <- function(JAB_stats, fill_colour = "orange") {
+
+  # declare ggplot variables
+  rank <- NULL
+  conf_int <- NULL
+  se2_jack <- NULL
+  se2_boot <- NULL
+
+  # get number of GOF stats
+  GOF_stats <- unique(JAB_stats$GOF_stat)
+  num_stats <- length(GOF_stats)
+
+  for (i in 1:num_stats) {
+    GOF <- GOF_stats[i]
+    selected_stats <- JAB_stats[JAB_stats$GOF_stat == GOF,]
+
+    # rank
+    selected_stats_ranked <- selected_stats[order(selected_stats$seJab),]
+
+    # add rank
+    num_selected <- nrow(selected_stats)
+    selected_stats_ranked$rank <- seq(from = 1, to = num_selected)
+
+    if (i == 1) {
+      all_stats <- selected_stats_ranked
+    } else {
+      all_stats <- rbind(all_stats, selected_stats_ranked)
+    }
+  }
+
+  # calculate stats for plotting
+
+  # get confidence intervals
+  all_stats$conf_int <- all_stats$p95 - all_stats$p05
+
+  # get 2 x standard error estimates from bootstrapping
+  all_stats$se2_boot <- all_stats$seBoot * 2
+
+  # get 2 x the Jackknife estimate of the standard error
+  all_stats$se2_jack <- all_stats$seJack * 2
+
+  # plot values
+
+  p1 <- ggplot() +
+    geom_area(data = all_stats, aes(rank, se2_jack, fill = fill_colour)) +
+    geom_line(data = all_stats, aes(rank, se2_boot, colour = "red")) +
+    geom_line(data = all_stats, aes(rank, conf_int, colour = "black")) +
+
+    xlab("Site index, ranked w.r.t. the Bootstrap estimates of the confidence intervals") +
+    ylab("Uncertainty") +
+    ylim(0, 0.5) +
+    scale_colour_manual(name = '', values =c('black'='black','red'='red'),
+                        labels = c('Confidence interval (p95 - p05)',
+                                   '2 x standard error (Bootstrap)')) +
+    scale_fill_identity(name = '', guide = 'legend',labels = c("2 x standard error (Jackknife)")) +
+    facet_wrap(~GOF_stat, nrow = 2) +
+    guides(
+      color = guide_legend(order = 1),
+      fill = guide_legend(order = 2)
+    )
+
+ return(p1)
+}
