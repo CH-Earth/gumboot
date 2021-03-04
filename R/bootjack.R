@@ -170,10 +170,10 @@ bootjack <- function(flows,
     # -------------------------------------------
 
     # get the product moment statistics
-    meanSim <- mean(qSimValid)
-    meanObs <- mean(qObsValid)
-    varSim <- var(qSimValid)
-    varObs <- var(qObsValid)
+    meanSim <- mean(qSimValid, na.rm = TRUE)
+    meanObs <- mean(qObsValid, na.rm = TRUE)
+    varSim <- var(qSimValid, na.rm = TRUE)
+    varObs <- var(qObsValid, na.rm = TRUE)
     rProd <- cor(qSimValid, qObsValid)
 
     # get stats
@@ -244,11 +244,11 @@ bootjack <- function(flows,
    zBoot  <- xBoot[1:nSample]
 
    # get the valid samples
-   ixJack <- which(zJack > -9998)
+   ixJack <- which(zJack > -9998 & (!is.na(zJack)))
    nJack <- length(ixJack)
 
    # get the mean of all Jackknife samples
-   jackMean <- mean(zJack)
+   jackMean <- mean(zJack, na.rm = TRUE)
 
    # get the jackknife estimates
    jackScore <- (nJack * score) - (nJack-1) * jackMean
@@ -258,9 +258,9 @@ bootjack <- function(flows,
    # get the bootstrap estimates
    ySample   <- zBoot[order(zBoot)]
    seBoot    <- sd(zBoot)  # ==. 23
-   p05       <- quantile(ySample, 0.05)
-   p50       <- median(ySample)
-   p95       <- quantile(ySample, 0.95)
+   p05       <- quantile(ySample, 0.05, na.rm = TRUE)
+   p50       <- median(ySample, na.rm = TRUE)
+   p95       <- quantile(ySample, 0.95, na.rm = TRUE)
 
    # get the bias
    biasJack  <- (nJack- 1) * (jackMean - score)
@@ -282,8 +282,8 @@ bootjack <- function(flows,
      nMissing <- length(ixMissing)
      xSample   <- zBoot[ixMissing]
      ySample   <- xSample[order(xSample)]
-     p05jack   <- quantile(ySample, 0.05)
-     p95jack   <- quantile(ySample, 0.95)
+     p05jack   <- quantile(ySample, 0.05, na.rm = TRUE)
+     p95jack   <- quantile(ySample, 0.95, na.rm = TRUE)
      jabData[iYear] <- p95jack - p05jack          # data used in the jackknife
 
    }  # looping through years
@@ -297,5 +297,16 @@ bootjack <- function(flows,
    errorStats[iPlot,] <- c(GOF_stat[iPlot], seJack, seBoot, p05, p50, p95, score, biasJack, biasBoot, seJab)
 
 }  # looping through plots
+
+ errorStats$seJack <- as.numeric(errorStats$seJack)
+ errorStats$seBoot <- as.numeric(errorStats$seBoot)
+ errorStats$p05 <- as.numeric(errorStats$p05)
+ errorStats$p50 <- as.numeric(errorStats$p50)
+ errorStats$p95 <- as.numeric(errorStats$p95)
+ errorStats$score <- as.numeric(errorStats$score)
+ errorStats$biasJack <- as.numeric(errorStats$biasJack)
+ errorStats$biasBoot <- as.numeric(errorStats$biasBoot)
+ errorStats$seJab <- as.numeric(errorStats$seJab)
+
  return(errorStats)
 }
