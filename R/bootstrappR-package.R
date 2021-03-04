@@ -1,6 +1,6 @@
 #' @title  Bootstrap Analyses of Hydrological Model Error
 #' @docType package
-#' @name bootstrappR-packag
+#' @name bootstrappR-package
 #'
 #' @description
 #' bootstrappR is an R package which does jackknife after bootstrap analyses of the error in hydrological models by
@@ -15,8 +15,8 @@
 #'
 #' The package was partly funded by the Global institute for Water Security (GIWS; \href{https://www.usask.ca/water/}{https://www.usask.ca/water/}) and the Global Water Futures (GWF; \href{https://gwf.usask.ca/}{https://gwf.usask.ca/}) program.
 #' @references
-#'  The package is described in: \cr
-#'  \cite{Clark, M.P, et al. 2020. "Evaluation of global performance metrics habitually used in hydrological modelling studies: A critique and path forward"}
+#'  The package code is described in: \cr
+#'  \cite{Clark, M.P, et al. 2020. "The abuse of popular performance metrics in hydrologic modeling"}
 #'
 #' @import dplyr hydroGOF ggplot2 lubridate stringr ncdf4
 NULL
