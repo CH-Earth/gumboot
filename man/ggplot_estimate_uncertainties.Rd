@@ -4,13 +4,15 @@
 \alias{ggplot_estimate_uncertainties}
 \title{Plots uncertainties in model error estimates}
 \usage{
-ggplot_estimate_uncertainties(JAB_stats, fill_colour = "orange")
+ggplot_estimate_uncertainties(JAB_stats, fill_colour = NULL)
 }
 \arguments{
 \item{JAB_stats}{Required. Data frame of jackknife after boot statistics for a large number
 of model runs, as produced by \code{conus_hcdn_bootjack}.}
 
-\item{fill_colour}{Required. Color used to fill the plot of 2 x the Jackknife estimate of the standard error.}
+\item{fill_colour}{Optional. If \code{NULL} (the default), then all data series are plotted as lines.
+If specified, e.g.\code{fill_colour = "orange"}, the plot of 2 x the Jackknife estimate of the
+standard error will be filled with the specified colour.}
 }
 \value{
 Returns a \code{ggplot2} object of the plots, faceted by goodness of fit statistic, i.e. NSE/KGE.
