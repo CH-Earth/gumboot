@@ -192,9 +192,12 @@ bootjack <- function(flows,
     rProd <- cor(qSimValid, qObsValid)
 
     # get stats
-    statsJack[iSample,1:5] <- c(meanSim, meanObs, varSim, varObs, rProd)
-    statsBoot[iSample,1:5] <- c(meanSim, meanObs, varSim, varObs, rProd)
-
+    if (samplingStrategy[iStrategy] == 'jack') {
+      statsJack[iSample,1:5] <- c(meanSim, meanObs, varSim, varObs, rProd)
+    }
+    if (samplingStrategy[iStrategy] == 'boot') {
+      statsBoot[iSample,1:5] <- c(meanSim, meanObs, varSim, varObs, rProd)
+    }
     if (NSE_is_present) {
       nse <- NSE(qSimValid, qObsValid)
 
@@ -221,7 +224,7 @@ bootjack <- function(flows,
  }
 
 # now get error stats
-
+# browser()
  errorStats <- data.frame("GOF_stat" = "","seJack" = NA_real_,
                           "seBoot" = NA_real_, "p05" = NA_real_,
                           "p50" = NA_real_, "p95" = NA_real_,
