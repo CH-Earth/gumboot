@@ -1,20 +1,28 @@
 #' Bootstrap-jacknife of flow calibration statistics
 #'
-#' @param flows Required. Data frame containing the date, observed and simulated flows. The variable names
-#' must be \option{date}, \option{obs}, and \option{sim}, respectively. The \code{date} must be a standard \R date.
-#' @param GOF_stat Required. Name(s) of simulation goodness of fit statistic(s) to be calculated. Currently both \code{NSE} and \code{KGE} are supported.
+#' @param flows Required. Data frame containing the date, observed and simulated
+#' flows. The variable names must be \option{date}, \option{obs}, and \option{sim},
+#' respectively. The \code{date} must be a standard \R date.
+#' @param GOF_stat Required. Name(s) of simulation goodness of fit statistic(s)
+#' to be calculated. Currently both \code{NSE} and \code{KGE} are supported.
 #' @param nSample Required. Number of samples for bootstrapping.
-#' @param waterYearMonth Required. Month of beginning of water year. Default is \code{10}
-#' (October). If the calendar year is required, set \code{waterYearMonth = 13}.
-#' @param startYear Optional. First year of data to be used. If \code{NULL} then not used.
-#' @param endYear Optional. Last year of data to be used. If \code{NULL} then not used.
-#' @param minDays Required. Minimum number of days per year with valid (i.e. greater than 0) flows. Default is 100.
+#' @param waterYearMonth Required. Month of beginning of water year. Default
+#' is \code{10} (October). If the calendar year is required, set
+#' \code{waterYearMonth = 13}.
+#' @param startYear Optional. First year of data to be used. If \code{NULL}
+#' then not used.
+#' @param endYear Optional. Last year of data to be used. If \code{NULL} then
+#' not used.
+#' @param minDays Required. Minimum number of days per year with valid
+#' (i.e. greater than 0) flows. Default is 100.
 #' @param minYears Required. Minimum number years to be used. Default is 10.
 #'
-#' @return Returns a data frame containing the goodness of fit statistic name (i.e. \option{NSE} and/or \option{KGE},
-#' and \code{seJack} = standard error of jacknife, \code{seBoot} = standard error of bootstrap, \code{p05, p50, p95},
-#' the 5th, 50th and 95th percentiles of the estimates, \code{score} = jackknife score,
-#' \code{biasJack} = bias of jackknife, \code{biasBoot} = bias of bootstap, \code{seJab} = standard error of jackknife after bootstrap.)
+#' @return Returns a data frame containing the goodness of fit statistic name
+#' (i.e. \option{NSE} and/or \option{KGE}, and \code{seJack} = standard error of
+#' jacknife, \code{seBoot} = standard error of bootstrap, \code{p05, p50, p95},
+#' the 5th, 50th and 95th percentiles of the estimates, \code{score} = jackknife
+#' score, \code{biasJack} = bias of jackknife, \code{biasBoot} = bias of bootstap,
+#' \code{seJab} = standard error of jackknife after bootstrap.)
 #'
 #' @author Kevin Shook
 #' @seealso \code{\link{read_hcdn}}
@@ -22,10 +30,10 @@
 #' @importFrom stats cor median quantile runif sd var
 #' @import dplyr
 #' @import hydroGOF
-#' @import stringr
+#' @importFrom stringr str_detect
 #'
-#' @examples \dontrun{
-#' NSE_stats <- bootjack(flows)}
+#' @examples
+#' NSE_stats <- bootjack(flows_1030500)
 bootjack <- function(flows,
                      GOF_stat = c("NSE", "KGE"),
                      nSample = 1000,
@@ -57,15 +65,18 @@ bootjack <- function(flows,
   nTrials <- length(endYear)
 
   # define the water years
-  flows$iyWater <- ifelse(flows$month >= waterYearMonth, flows$year + 1, flows$year)
+  flows$iyWater <- ifelse(flows$month >= waterYearMonth, flows$year + 1,
+                          flows$year)
   iyWater <- ifelse(flows$month >= waterYearMonth, flows$year + 1, flows$year)
   nYears <- length(unique(iyWater))
 
   # define stats data frames
   statsJack  <- data.frame("meanSim" = NA_real_, "meanObs"= NA_real_,
-                           "varSim"= NA_real_, "varObs"= NA_real_, "rProd"= NA_real_)
+                           "varSim"= NA_real_, "varObs"= NA_real_,
+                           "rProd"= NA_real_)
   statsBoot  <- data.frame("meanSim" = NA_real_, "meanObs"= NA_real_,
-                            "varSim"= NA_real_, "varObs"= NA_real_, "rProd"= NA_real_)
+                           "varSim"= NA_real_, "varObs"= NA_real_,
+                           "rProd"= NA_real_)
   if (NSE_is_present){
     statsJack$NSE <- NA_real_
     statsBoot$NSE <- NA_real_
@@ -90,7 +101,8 @@ bootjack <- function(flows,
 
   # get the number of days in each year
   good_flows <- flows[ixValid,]
-  valid_days <- good_flows %>% group_by(iyWater) %>% summarise(good_days = n_distinct(date))
+  valid_days <- good_flows %>% group_by(iyWater) %>%
+    summarise(good_days = n_distinct(date))
 
 
   # restrict attention to the water years with sufficient data
@@ -107,9 +119,12 @@ bootjack <- function(flows,
   nyValid <- nrow(valid_years)
 
   if (nyValid < minYears) {
-    errorStats <- data.frame("GOF_stat" = "","seJack" = NA_real_, "seBoot" = NA_real_, "p05" = NA_real_,
-                             "p50" = NA_real_, "p95" = NA_real_, "score" = NA_real_,
-                             "biasJack" = NA_real_, "biasBoot" = NA_real_, "seJab" = NA_real_)
+    errorStats <- data.frame("GOF_stat" = "","seJack" = NA_real_,
+                             "seBoot" = NA_real_, "p05" = NA_real_,
+                             "p50" = NA_real_, "p95" = NA_real_,
+                             "score" = NA_real_,
+                             "biasJack" = NA_real_, "biasBoot" = NA_real_,
+                             "seJab" = NA_real_)
     return(errorStats)
   }
 
@@ -207,9 +222,12 @@ bootjack <- function(flows,
 
 # now get error stats
 
- errorStats <- data.frame("GOF_stat" = "","seJack" = NA_real_, "seBoot" = NA_real_, "p05" = NA_real_,
-                          "p50" = NA_real_, "p95" = NA_real_, "score" = NA_real_,
-                          "biasJack" = NA_real_, "biasBoot" = NA_real_, "seJab" = NA_real_)
+ errorStats <- data.frame("GOF_stat" = "","seJack" = NA_real_,
+                          "seBoot" = NA_real_, "p05" = NA_real_,
+                          "p50" = NA_real_, "p95" = NA_real_,
+                          "score" = NA_real_,
+                          "biasJack" = NA_real_, "biasBoot" = NA_real_,
+                          "seJab" = NA_real_)
 
  # loop through stat types
  numstats <- length(GOF_stat)
@@ -253,7 +271,7 @@ bootjack <- function(flows,
    # get the jackknife estimates
    jackScore <- (nJack * score) - (nJack-1) * jackMean
    sumSqErr  <- (nJack-1) * sum((jackMean - zJack[ixJack])^2)
-   seJack    <- sqrt(sumSqErr/nJack)              # standard error of the Jackknife estimate (==. 22)
+   seJack    <- sqrt(sumSqErr/nJack)  # standard error of the Jackknife estimate (==. 22)
 
    # get the bootstrap estimates
    ySample   <- zBoot[order(zBoot)]

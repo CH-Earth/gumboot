@@ -16,36 +16,43 @@ bootjack(
 )
 }
 \arguments{
-\item{flows}{Required. Data frame containing the date, observed and simulated flows. The variable names
-must be \option{date}, \option{obs}, and \option{sim}, respectively. The \code{date} must be a standard \R date.}
+\item{flows}{Required. Data frame containing the date, observed and simulated
+flows. The variable names must be \option{date}, \option{obs}, and \option{sim},
+respectively. The \code{date} must be a standard \R date.}
 
-\item{GOF_stat}{Required. Name(s) of simulation goodness of fit statistic(s) to be calculated. Currently both \code{NSE} and \code{KGE} are supported.}
+\item{GOF_stat}{Required. Name(s) of simulation goodness of fit statistic(s)
+to be calculated. Currently both \code{NSE} and \code{KGE} are supported.}
 
 \item{nSample}{Required. Number of samples for bootstrapping.}
 
-\item{waterYearMonth}{Required. Month of beginning of water year. Default is \code{10}
-(October). If the calendar year is required, set \code{waterYearMonth = 13}.}
+\item{waterYearMonth}{Required. Month of beginning of water year. Default
+is \code{10} (October). If the calendar year is required, set
+\code{waterYearMonth = 13}.}
 
-\item{startYear}{Optional. First year of data to be used. If \code{NULL} then not used.}
+\item{startYear}{Optional. First year of data to be used. If \code{NULL}
+then not used.}
 
-\item{endYear}{Optional. Last year of data to be used. If \code{NULL} then not used.}
+\item{endYear}{Optional. Last year of data to be used. If \code{NULL} then
+not used.}
 
-\item{minDays}{Required. Minimum number of days per year with valid (i.e. greater than 0) flows. Default is 100.}
+\item{minDays}{Required. Minimum number of days per year with valid
+(i.e. greater than 0) flows. Default is 100.}
 
 \item{minYears}{Required. Minimum number years to be used. Default is 10.}
 }
 \value{
-Returns a data frame containing the goodness of fit statistic name (i.e. \option{NSE} and/or \option{KGE},
-and \code{seJack} = standard error of jacknife, \code{seBoot} = standard error of bootstrap, \code{p05, p50, p95},
-the 5th, 50th and 95th percentiles of the estimates, \code{score} = jackknife score,
-\code{biasJack} = bias of jackknife, \code{biasBoot} = bias of bootstap, \code{seJab} = standard error of jackknife after bootstrap.)
+Returns a data frame containing the goodness of fit statistic name
+(i.e. \option{NSE} and/or \option{KGE}, and \code{seJack} = standard error of
+jacknife, \code{seBoot} = standard error of bootstrap, \code{p05, p50, p95},
+the 5th, 50th and 95th percentiles of the estimates, \code{score} = jackknife
+score, \code{biasJack} = bias of jackknife, \code{biasBoot} = bias of bootstap,
+\code{seJab} = standard error of jackknife after bootstrap.)
 }
 \description{
 Bootstrap-jacknife of flow calibration statistics
 }
 \examples{
-\dontrun{
-NSE_stats <- bootjack(flows)}
+NSE_stats <- bootjack(flows_1030500)
 }
 \seealso{
 \code{\link{read_hcdn}}
