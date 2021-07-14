@@ -12,7 +12,8 @@ bootjack(
   startYear = NULL,
   endYear = NULL,
   minDays = 100,
-  minYears = 10
+  minYears = 10,
+  returnSamples = FALSE
 )
 }
 \arguments{
@@ -39,6 +40,9 @@ not used.}
 (i.e. greater than 0) flows. Default is 100.}
 
 \item{minYears}{Required. Minimum number years to be used. Default is 10.}
+
+\item{returnSamples}{Optional. Default is \code{FALSE}. If \code{TRUE}, then
+sample statistics are returned. This is primarily used for debugging/testing.}
 }
 \value{
 Returns a data frame containing the goodness of fit statistic name

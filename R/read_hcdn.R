@@ -3,7 +3,7 @@
 #' @param nc_file Required. netCDF file to read from.
 #' @param hcdn Required. Location to extract data.
 #' @param obsName Required. Name for variable containing observations. Default is "obs".
-#' @param simName Required. Name for variable containing simulations. Default is "sig1".
+#' @param simName Required. Name for variable containing simulations. Default is "kge".
 #'
 #' @return Returns a data frame containing the date, observed and simulated flows. The name of the
 #' observed flow variable is \code{obs}, the name of the simulated flow variable is \code{sim}.
@@ -16,7 +16,7 @@
 #' @examples \dontrun{
 #' flows <- read_hcdn(nc_file = "results_hcdn_flow.nc", hcdn = 1030500)
 #' }
-read_hcdn <- function(nc_file, hcdn, obsName = "obs", simName = "sig1") {
+read_hcdn <- function(nc_file, hcdn, obsName = "obs", simName = "kge") {
 
   # check parameters
   if (is.null(nc_file)) {
@@ -32,7 +32,7 @@ read_hcdn <- function(nc_file, hcdn, obsName = "obs", simName = "sig1") {
   hcdnName <- 'hcdn'  # name of the spatial dimension
 
   # open up netCDF
-  nc <- nc_open(nc_file, write=FALSE)
+  nc <- nc_open(nc_file, write = FALSE)
 
   # get the variable attributes
   hcdn_att <- ncatt_get(nc, hcdnName)
@@ -43,14 +43,14 @@ read_hcdn <- function(nc_file, hcdn, obsName = "obs", simName = "sig1") {
   nTime <- length(times)
 
   # get time units
-  time_units_att <-  ncatt_get(nc, timeName, "units")
+  time_units_att <- ncatt_get(nc, timeName, "units")
 
-  if(!time_units_att[[1]])
+  if (!time_units_att[[1]])
     stop("Time units missing")
 
   time_bits <- str_split_fixed(time_units_att[[2]], " ", 4)
 
-  if(time_bits[1,1] != "days")
+  if (time_bits[1,1] != "days")
     stop("NetCDF file not daily - can't read")
 
   origin <- time_bits[1, 3]

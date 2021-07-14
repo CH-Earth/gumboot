@@ -12,6 +12,8 @@
 #' @param endYear Optional. Last year of data to be used. If \code{NULL} then not used.
 #' @param minDays Required. Minimum number of days per year with valid (i.e. greater than 0) flows. Default is 100.
 #' @param minYears Required. Minimum number years to be used. Default is 10.
+#' @param quiet Optional. If \code{FALSE} (the default) a progress bar is displayed. If \code{TRUE},
+#' it is not.
 #'
 #' @return Returns a data frame containing the following variables:
 #' \itemize{
@@ -47,7 +49,8 @@ conus_hcdn_bootjack <- function(hcdn_sites = NULL,
                                 startYear = NULL,
                                 endYear = NULL,
                                 minDays = 100,
-                                minYears = 10) {
+                                minYears = 10,
+                                quiet = FALSE) {
   # check parameters
   if (is.null(NetCDF_file)) {
     stop("NetCDF file containing flows is required")
@@ -60,9 +63,12 @@ conus_hcdn_bootjack <- function(hcdn_sites = NULL,
   # loop through sites
 
   num_sites <- nrow(hcdn_sites)
-  pb <- txtProgressBar(min = 1, max = num_sites, style = 3)
-  for (i in 1:num_sites){
-    setTxtProgressBar(pb, i)
+  if (!quiet)
+    pb <- txtProgressBar(min = 1, max = num_sites, style = 3)
+
+  for (i in 1:num_sites) {
+    if (!quiet)
+      setTxtProgressBar(pb, i)
 
     # get data
     hcdn_site <- hcdn_sites$hcdn_site[i]
@@ -72,7 +78,7 @@ conus_hcdn_bootjack <- function(hcdn_sites = NULL,
     jab$hcdn_site <- hcdn_site
     jab$lat <- hcdn_sites$lat[i]
     jab$lon <- hcdn_sites$lon[i]
-    if(i == 1) {
+    if (i == 1) {
       all_jab <- jab
     } else {
       all_jab <- rbind(all_jab, jab)
