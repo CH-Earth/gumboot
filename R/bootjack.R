@@ -170,8 +170,6 @@ bootjack <- function(flows,
   if (read_bootyears)
     bootYears <- read.csv(bootYearFile, header = FALSE)
 
-  if (read_jackyears)
-    jackYears <- read.csv(jackYearFile, header = FALSE)
 
 # loop through sampling strategies
   for (iStrategy in 1:n_sampling_strategies) {

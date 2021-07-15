@@ -12,6 +12,14 @@
 #' @param endYear Optional. Last year of data to be used. If \code{NULL} then not used.
 #' @param minDays Required. Minimum number of days per year with valid (i.e. greater than 0) flows. Default is 100.
 #' @param minYears Required. Minimum number years to be used. Default is 10.
+#' @param seed Optional. If \code{NULL} (the default) then no seed is specified
+#' for the random number generator used for the bootstrapping. If a value is specified
+#' then the bootstrapping will always use the same set of pseudo-random numbers.
+#' @param bootYearFile Optional. If \code{NULL} (the default) the years used for
+#' the bootstrapping are neither output nor input. If a file is specified, and it
+#' it does not already exist, then the bootstrap years will be written to a .csv
+#' file as a table with the dimensions of years x nSample. If a file is specified,
+#' and it _does_ exist, then the years will be read in, and used for the bootstrapping.
 #' @param quiet Optional. If \code{FALSE} (the default) a progress bar is displayed. If \code{TRUE},
 #' it is not.
 #'
@@ -50,6 +58,8 @@ conus_hcdn_bootjack <- function(hcdn_sites = NULL,
                                 endYear = NULL,
                                 minDays = 100,
                                 minYears = 10,
+                                seed = NULL,
+                                bootYearFile,
                                 quiet = FALSE) {
   # check parameters
   if (is.null(NetCDF_file)) {
