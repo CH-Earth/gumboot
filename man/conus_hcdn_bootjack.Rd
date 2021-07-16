@@ -14,7 +14,10 @@ conus_hcdn_bootjack(
   startYear = NULL,
   endYear = NULL,
   minDays = 100,
-  minYears = 10
+  minYears = 10,
+  seed = NULL,
+  bootYearFile,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -39,6 +42,19 @@ conus_hcdn_bootjack(
 \item{minDays}{Required. Minimum number of days per year with valid (i.e. greater than 0) flows. Default is 100.}
 
 \item{minYears}{Required. Minimum number years to be used. Default is 10.}
+
+\item{seed}{Optional. If \code{NULL} (the default) then no seed is specified
+for the random number generator used for the bootstrapping. If a value is specified
+then the bootstrapping will always use the same set of pseudo-random numbers.}
+
+\item{bootYearFile}{Optional. If \code{NULL} (the default) the years used for
+the bootstrapping are neither output nor input. If a file is specified, and it
+it does not already exist, then the bootstrap years will be written to a .csv
+file as a table with the dimensions of years x nSample. If a file is specified,
+and it _does_ exist, then the years will be read in, and used for the bootstrapping.}
+
+\item{quiet}{Optional. If \code{FALSE} (the default) a progress bar is displayed. If \code{TRUE},
+it is not.}
 }
 \value{
 Returns a data frame containing the following variables:

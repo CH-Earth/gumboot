@@ -200,7 +200,6 @@ bootjack <- function(flows,
             ixYear  <- floor(uRand*nyValid) + 1
             iyYear  <- izUnique[ixYear]
           } else {
-          #  browser()
             iyYear  <- bootYears[, iSample - 1 ]
           }
 
@@ -234,6 +233,7 @@ bootjack <- function(flows,
     varSim <- var(qSimValid, na.rm = TRUE)
     varObs <- var(qObsValid, na.rm = TRUE)
     rProd <- cor(qSimValid, qObsValid)
+
 
     # get stats
     if (samplingStrategy[iStrategy] == 'jack') {
@@ -353,9 +353,14 @@ bootjack <- function(flows,
    # get the bootstrap estimates
    ySample   <- zBoot[order(zBoot)]
    seBoot    <- sd(zBoot)  # ==. 23
-   p05       <- quantile(ySample, 0.05, na.rm = TRUE, type = 3)
-   p50       <- median(ySample, na.rm = TRUE)
-   p95       <- quantile(ySample, 0.95, na.rm = TRUE, type = 3)
+#   p05       <- quantile(ySample, 0.05, na.rm = TRUE, type = 3)
+#   p50       <- median(ySample, na.rm = TRUE)
+#   p95       <- quantile(ySample, 0.95, na.rm = TRUE, type = 3)
+
+    p05 <- ySample[floor(0.05 * nSample) + 1]
+    p50 <- ySample[floor(0.5 * nSample) + 1]
+    p95 <- ySample[floor(0.95 * nSample) + 1]
+
 
    # get the bias
    biasJack  <- (nJack - 1) * (jackMean - score)
@@ -378,16 +383,16 @@ bootjack <- function(flows,
      nMissing <- length(ixMissing)
      xSample   <- zBoot[ixMissing]
      ySample   <- xSample[order(xSample)]
-     p05jack   <- quantile(xSample, 0.05, type = 3)
-     p95jack   <- quantile(xSample, 0.95, type = 3)
+     p05jack_R   <- quantile(xSample, 0.05, type = 3)
+     p95jack_R   <- quantile(xSample, 0.95, type = 3)
+     p05jack <- ySample[floor(0.05 * nMissing) + 1]
+     p95jack <- ySample[floor(0.95 * nMissing) + 1]
 
-     jabData[iYear] <- p95jack - p05jack          # data used in the jackknife
-     cat(iyUnique[iYear], length(ySample), format(p05jack, digits = 5), format(p95jack, digits = 5), format(jabData[iYear], digits = 5),"\n")
+     jabData[iYear - 1] <- p95jack - p05jack          # data used in the jackknife
 
    }  # looping through years
 
    # get the jackknife estimates
-   browser()
    jabMean   <- mean(jabData)
    sumSqErr  <- (nYears - 1)*sum((jabMean - jabData)^2)
    seJab     <- sqrt(sumSqErr/nYears) # standard error of the bootstrap estimate

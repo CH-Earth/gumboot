@@ -13,7 +13,9 @@ bootjack(
   endYear = NULL,
   minDays = 100,
   minYears = 10,
-  returnSamples = FALSE
+  returnSamples = FALSE,
+  seed = NULL,
+  bootYearFile = NULL
 )
 }
 \arguments{
@@ -43,6 +45,16 @@ not used.}
 
 \item{returnSamples}{Optional. Default is \code{FALSE}. If \code{TRUE}, then
 sample statistics are returned. This is primarily used for debugging/testing.}
+
+\item{seed}{Optional. If \code{NULL} (the default) then no seed is specified
+for the random number generator used for the bootstrapping. If a value is specified
+then the bootstrapping will always use the same set of pseudo-random numbers.}
+
+\item{bootYearFile}{Optional. If \code{NULL} (the default) the years used for
+the bootstrapping are neither output nor input. If a file is specified, and it
+it does not already exist, then the bootstrap years will be written to a .csv
+file as a table with the dimensions of years x nSample. If a file is specified,
+and it _does_ exist, then the years will be read in, and used for the bootstrapping.}
 }
 \value{
 Returns a data frame containing the goodness of fit statistic name

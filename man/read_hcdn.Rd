@@ -4,7 +4,7 @@
 \alias{read_hcdn}
 \title{Reads simulated and observed values from HCDN netcdf file for a single location}
 \usage{
-read_hcdn(nc_file, hcdn, obsName = "obs", simName = "sig1")
+read_hcdn(nc_file, hcdn, obsName = "obs", simName = "kge")
 }
 \arguments{
 \item{nc_file}{Required. netCDF file to read from.}
@@ -13,7 +13,7 @@ read_hcdn(nc_file, hcdn, obsName = "obs", simName = "sig1")
 
 \item{obsName}{Required. Name for variable containing observations. Default is "obs".}
 
-\item{simName}{Required. Name for variable containing simulations. Default is "sig1".}
+\item{simName}{Required. Name for variable containing simulations. Default is "kge".}
 }
 \value{
 Returns a data frame containing the date, observed and simulated flows. The name of the

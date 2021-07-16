@@ -84,7 +84,9 @@ conus_hcdn_bootjack <- function(hcdn_sites = NULL,
     hcdn_site <- hcdn_sites$hcdn_site[i]
     hcdn_values <- read_hcdn(NetCDF_file, hcdn_site, obsName = "obs", simName = sim_var)
     # do JAB
-    jab <- bootjack(hcdn_values, GOF_stat, nSample, waterYearMonth, startYear, endYear, minDays, minYears)
+    jab <- bootjack(hcdn_values, GOF_stat, nSample, waterYearMonth, startYear,
+                    endYear, minDays, minYears, returnSamples = FALSE, seed = seed,
+                    bootYearFile = bootYearFile)
     jab$hcdn_site <- hcdn_site
     jab$lat <- hcdn_sites$lat[i]
     jab$lon <- hcdn_sites$lon[i]
