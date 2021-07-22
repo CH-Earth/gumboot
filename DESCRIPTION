@@ -1,4 +1,4 @@
-Package: bootstrappR
+Package: gumboot
 Type: Package
 Title: Bootstrap Analyses of Hydrological Model Error
 Version: 0.1.0

@@ -1,4 +1,4 @@
 library(testthat)
-library(bootstrappR)
+library(gumboot)
 
-test_check("bootstrappR")
+test_check("gumboot")

@@ -1,9 +1,9 @@
 #' @title  Bootstrap Analyses of Hydrological Model Error
 #' @docType package
-#' @name bootstrappR-package
+#' @name gumboot-package
 #'
 #' @description
-#' bootstrappR is an R package which does jackknife after bootstrap analyses of the error in hydrological models by
+#' gumboot is an R package which does jackknife after bootstrap analyses of the error in hydrological models by
 #' estimating the empirical probability distributions of NSE (Nash-Sutcliffe efficiency) and KGE (Kling-Gupta efficiency)
 #' estimators.
 #'
