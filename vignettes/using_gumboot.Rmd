@@ -1,0 +1,116 @@
+---
+title: "Using gumboot"
+author: "Martyn Clark and Kevin Shook"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(gumboot)
+```
+
+Clark et al. (2021) have shown how Goodness of Fit (GOF) statistics for
+hydrological models can easily be misused. The purpose of `gumboot` is to
+evaluate the error in GOF statistics, through jacknifing
+after bootstrapping.
+
+## Theory
+I'm leaving this for you, Martyn!
+
+## How to use `gumboot`
+The most important function is `bootjack()` which computes the bootstap and jackknife statistics
+for a single data set, which is a data frame containing dates, observed
+and simulated flows.
+
+A data set (`flows_1030500`) is provided.
+```{r}
+flows_1030500 <- flows_1030500 
+head(flows_1030500)
+```
+
+Plotting the values shows fairly good agreement between the simulated and observed values  
+
+```{r, fig.width = 5}
+library(ggplot2)
+library(reshape2)
+melted <- melt(flows_1030500, id.vars = "date")
+ggplot(melted, aes(date, value, colour = variable)) +
+  geom_line() +
+  xlab("") +
+  ylab("Daily streamflow (m³/s)") 
+```
+
+To perform the bootstrap and jackknife analyses, the values are 
+passed to `bootjack`. There are many options.
+The default is to calculate statistics for both NSE (Nash-Sutcliffe efficiency), and
+KGE (Kling-Gupta efficiency) values. In this example, we will compute the
+statistics of the NSE.  
+
+Note that the name of the observed variable must be `obs` and the name
+of the simulated variable must be `sim`.
+
+```{r}
+NSE_values <- bootjack(flows_1030500, GOF_stat = "NSE")
+NSE_values
+```
+In this example, the standard error of the NSE statistic, as calculated by jackknifing is `r NSE_values$seJack[1]`; as calculated by bootstrapping it is `r NSE_values$seBoot[1]`, and as calculated
+by jackknifing after the bootstrapping (JAB) is `r NSE_values$seJab[1]`, showing the uncertainty
+in the statistic.  
+
+It is important to note that the bootstrap and jackknife-after-bootstrap standard errors are dependant
+on random samples of the years, so the values will change with each execution of the function.
+If you want to get the same values each time, for example to compare your results with
+another person's analyses, you have two options.
+
+If you set the option `seed` to have a value, the **R** random number generator will always
+return the same sequence of values, as shown below:  
+
+```{r}
+bootjack(flows_1030500, GOF_stat = "NSE", seed = 1)
+bootjack(flows_1030500, GOF_stat = "NSE", seed = 1)
+```
+
+Note that the value of `seJack` above is identical to the previously determined value,
+as the jackknifing always uses the same set of years of data.
+
+
+If you want to compare the results with code not written in **R** you can save the randomly selected
+years to a file. If the specified file does not exist, it will be written to. If
+the file does exist, then the years will be read from it. 
+
+### Raw values
+If you are interested in the values used to calculate the standard errors, you can return them
+using the option `returnSamples = TRUE`. The function returns a list with the values
+for the bootstrap and jackknifing analyses.
+
+```{r}
+NSE_samples <- bootjack(flows_1030500, GOF_stat = "NSE", returnSamples = TRUE)
+names(NSE_samples)
+```
+
+You can see the variability of the NSE values (as well as the sampled observed and 
+simulated values) as determined by the bootstrap and jackknife.
+
+```{r, fig.width=5, warning=FALSE, message = FALSE, error=FALSE}
+ggplot(NSE_samples$statsBoot, aes(NSE)) + 
+  geom_histogram() +
+  ggtitle("Bootstrap samples")
+```
+
+
+## Multiple locations
+
+The function `conus_hcdn_bootjack()` applies `bootjack()` to model runs over the
+continental US (CONUS). The model runs are not supplied, but would need to
+be stored in a NetCDF file.
+
+Note - I think we'll need a description of the HCDN dataset here.
+

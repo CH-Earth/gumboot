@@ -43,7 +43,7 @@
 #' @importFrom utils read.csv write.table
 #'
 #' @examples
-#' NSE_stats <- bootjack(flows_1030500)
+#' NSE_stats <- bootjack(flows_1030500, "NSE")
 bootjack <- function(flows,
                      GOF_stat = c("NSE", "KGE"),
                      nSample = 1000,
