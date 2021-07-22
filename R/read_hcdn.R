@@ -27,6 +27,10 @@ read_hcdn <- function(nc_file, hcdn, obsName = "obs", simName = "kge") {
     stop("location parameter is required")
   }
 
+  if (obsName == simName) {
+    stop("obsName and simName are the same")
+  }
+
   # define the netcdf
   timeName <- 'time'  # name of the time dimension
   hcdnName <- 'hcdn'  # name of the spatial dimension

@@ -40,6 +40,7 @@
 #' @import dplyr
 #' @import hydroGOF
 #' @importFrom stringr str_detect
+#' @importFrom utils read.csv write.table
 #'
 #' @examples
 #' NSE_stats <- bootjack(flows_1030500)
@@ -389,14 +390,12 @@ bootjack <- function(flows,
      p95jack <- ySample[floor(0.95 * nMissing) + 1]
 
      jabData[iYear - 1] <- p95jack - p05jack          # data used in the jackknife
-
    }  # looping through years
 
    # get the jackknife estimates
    jabMean   <- mean(jabData)
    sumSqErr  <- (nYears - 1)*sum((jabMean - jabData)^2)
    seJab     <- sqrt(sumSqErr/nYears) # standard error of the bootstrap estimate
-
    # save errors
    errorStats[iPlot,] <- c(GOF_stat[iPlot], seJack, seBoot, p05, p50, p95, score, biasJack, biasBoot, seJab)
 
