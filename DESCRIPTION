@@ -1,7 +1,7 @@
 Package: gumboot
 Type: Package
-Title: Bootstrap Analyses of Sampling Uncertainty in Goodness-of-Fit statistics
-Version: 0.1.0
+Title: Bootstrap Analyses of Sampling Uncertainty in Goodness-of-Fit Statistics
+Version: 1.0.0
 Author: Martyn Clark and Kevin Shook
 Maintainer: Kevin Shook <krs350@mail.usask.ca>
 Description: Uses jackknife and bootstrap methods to quantify the sampling uncertainty in goodness-of-fit statistics. Full details are in Clark et al. (2021) "The abuse of popular performance metrics in hydrologic modeling", _Water Resources Research_, doi: 10.1002/2020WR029001. 

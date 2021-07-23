@@ -1,0 +1,34 @@
+year <- "2021"
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(
+  bibtype  = "Manual",
+  title    = "gumboot: Bootstrap Analyses of Sampling Uncertainty in Goodness-of-Fit statistics",
+  author   = c(person(given = "Martyn", family = "Clark"),
+               person(given = "Kevin", family = "Shook")
+               ),
+  year     = year,
+  note     = note,
+  url      = "https://github.com/CH-Earth/gumboot"
+)
+
+bibentry(bibtype = "Article",
+          title = "The abuse of popular performance metrics in hydrologic modeling",
+          journal = "Water Resources Research",
+          pages = "",
+          year = "2021",
+          doi = "10.1002/2020WR029001",
+          author =  c(person(given = c("Martyn", "P."), family = "Clark"),
+               person(given = c("Richard", "M."), family = "Vogel"),
+               person(given = c("Jonathan", "R."), family = "Lamontagne"),
+               person(given = "Naoki", family = "Mizukami"),
+               person(given = c("Wouter", "J.M."), family = "Knoben"),
+               person(given = c("Guoqiang"), family = "Tang"),
+               person(given = c("Shervan"), family = "Gharari"),
+               person(given = c("Jim", "E."), family = "Freer"),
+               person(given = c("Paul", "H."), family = "Whitfield"),
+               person(given = "Kevin", family = "Shook"),
+               person(given = "Simon", family = "Papalexiou")
+               )
+)
+

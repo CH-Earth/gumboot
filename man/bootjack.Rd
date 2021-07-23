@@ -68,7 +68,7 @@ score, \code{biasJack} = bias of jackknife, \code{biasBoot} = bias of bootstap,
 Bootstrap-jacknife of flow calibration statistics
 }
 \examples{
-NSE_stats <- bootjack(flows_1030500)
+NSE_stats <- bootjack(flows_1030500, "NSE")
 }
 \seealso{
 \code{\link{read_hcdn}}

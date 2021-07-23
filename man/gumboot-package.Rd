@@ -12,7 +12,7 @@ estimators.
 \section{Funding}{
 
 
-The package was partly funded by the Global institute for Water Security (GIWS; \href{https://www.usask.ca/water/}{https://www.usask.ca/water/}) and the Global Water Futures (GWF; \href{https://gwf.usask.ca/}{https://gwf.usask.ca/}) program.
+The package was partly funded by the Global institute for Water Security (GIWS; \href{https://water.usask.ca/}{https://water.usask.ca/}) and the Global Water Futures (GWF; \href{https://gwf.usask.ca/}{https://gwf.usask.ca/}) program.
 }
 
 \references{
