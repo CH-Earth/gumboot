@@ -19,11 +19,15 @@ library(gumboot)
 
 Clark et al. (2021) have shown how Goodness of Fit (GOF) statistics for
 hydrological models can easily be misused. The purpose of `gumboot` is to
-evaluate the error in GOF statistics, through jacknifing
-after bootstrapping.
+evaluate the sampling uncertainty in GOF statistics using both jacknife and 
+bootstrap methods.
 
 ## Theory
-I'm leaving this for you, Martyn!
+The sampling uncertainty in the GOF estimates is quantified using a mixture of Jackknife and Bootstrap methods. First, we use the Jackknife and Bootstrap methods to compute the standard error in the GOF estimates. These methods resample from the original data sample using the Non-overlapping Block Bootstrap (NBB) strategy using data blocks of length one year. The use of data blocks of length one year reduces the issues with substantial seasonal nonstationarity in shorter data blocks, while preserving the within-year autocorrelation and seasonal periodicity of streamflow series. Bootstrapping methods are only effective if the blocks used are approximately independent. Second, we use the Bootstrap methods to compute tolerance intervals for the GOF estimates, where the 90% tolerance intervals are defined as the difference between the 95th and 5th percentile of the empirical probability distribution of the GOF estimates.  Tolerance intervals differ from confidence intervals, because tolerance intervals are intervals corresponding to a random variable, rather than random confidence intervals around some true value. These bootstrap tolerance intervals are computed using 1000 bootstrap samples. Finally, we use the Jackknife-After-Bootstrap method (Efron, 1992) to estimate the standard error in the Bootstrap tolerance intervals, which enables us to evaluate how sensitive the resulting uncertainty intervals are to individual years (blocks). 
+
+References:
+Efron, B. and Gong, G., 1983. A leisurely look at the bootstrap, the jackknife, and cross-validation. The American Statistician, 37(1), pp.36-48.
+Efron, B., 1992. Jackknife‐after‐bootstrap standard errors and influence functions. Journal of the Royal Statistical Society: Series B (Methodological), 54(1), pp.83-111.
 
 ## How to use `gumboot`
 The most important function is `bootjack()` which computes the bootstap and jackknife statistics
@@ -109,8 +113,12 @@ ggplot(NSE_samples$statsBoot, aes(NSE)) +
 ## Multiple locations
 
 The function `conus_hcdn_bootjack()` applies `bootjack()` to model runs over the
-continental US (CONUS). The model runs are not supplied, but would need to
+"CAMELS" catchments across the contiguous US (CONUS). The model runs are not supplied, and need to
 be stored in a NetCDF file.
 
-Note - I think we'll need a description of the HCDN dataset here.
+Newman et al. (2015) and Addor et al. (2017) provide details on the hydrometeorological and physiographical characteristics of the CAMELS catchments. The CAMELS catchments are those with minimal human disturbance (i.e., minimal land use changes or disturbances, minimal water withdrawals), and are hence almost exclusively smaller, headwater-type catchments (median basin size of 336 km2).
+
+References:
+Addor, N., Newman, A.J., Mizukami, N. and Clark, M.P., 2017. The CAMELS data set: catchment attributes and meteorology for large-sample studies. Hydrology and Earth System Sciences, 21(10), pp.5293-5313
+Newman, A.J., Clark, M.P., Sampson, K., Wood, A., Hay, L.E., Bock, A., Viger, R.J., Blodgett, D., Brekke, L., Arnold, J.R. and Hopson, T., 2015. Development of a large-sample watershed-scale hydrometeorological data set for the contiguous USA: data set characteristics and assessment of regional variability in hydrologic model performance. Hydrology and Earth System Sciences, 19(1), p.209
 
