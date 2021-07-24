@@ -1,8 +1,18 @@
-#' Jackknife after bootstrap for all HCDN sites
+#' Jackknife after bootstrap for all CAMELS sites
 #'
-#' @param hcdn_sites Required. Data frame of HCDN sites. Must contain a field called \option{hcdn_site"}. The data frame
-#' \code{hcdn_conus_sites} will work. You can subset this data frame if you want to use fewer sites.
-#' @param NetCDF_file Required. NetCDF file containing modelled and gauged flows for CONUS.
+#' @description Hydrologic model simulations can be produced using input-response data
+#' from the 671 catchments in the CAMELS dataset (Catchment Attributes and MEteorology
+#' for Large-sample Studies). Newman et al. (2015) and Addor et al. (2017)
+#' provide details on the hydrometeorological and physiographical characteristics of
+#' the CAMELS catchments. The CAMELS catchments are those with minimal human disturbance
+#' (i.e., minimal land use changes or disturbances, minimal water withdrawals), and are
+#' hence almost exclusively smaller, headwater-type catchments (median basin size of 336 km^2^).
+#' The CAMELS data used for the large-domain model simulations are publicly available at the
+#' National Center for Atmospheric Research at \url{https://ral.ucar.edu/solutions/products/camels}.
+#'
+#' @param CAMELS_sites Required. Data frame of CAMELS sites. Must contain a field called \option{CAMELS_site}. The data frame
+#' \code{CAMELS_sites} will work. You can subset this data frame if you want to use fewer sites.
+#' @param NetCDF_file Required. NetCDF file containing CAMELS modelled and gauged flows.
 #' @param sim_var Required. Name of variable containing simulated flows in \code{NetCDF}.
 #' @param GOF_stat Required. Name(s) of simulation goodness of fit statistic(s) to be calculated. Currently both \code{NSE} and \code{KGE} are supported.
 #' @param nSample Required. Number of samples for bootstrapping.
@@ -25,9 +35,9 @@
 #'
 #' @return Returns a data frame containing the following variables:
 #' \itemize{
-#'  \item{\code{hcdn_site}}{HCDN site number}
-#'  \item{\code{lat}}{HCDN site latitude}
-#'  \item{\code{lon}}{HCDN site longitude}
+#'  \item{\code{CAMELS_site}}{CAMELS site number}
+#'  \item{\code{lat}}{CAMELS site latitude}
+#'  \item{\code{lon}}{CAMELS site longitude}
 #'  \item{\code{GOF_stat}}{Goodness of fit statistics (i.e. NSE or KGE)}
 #'  \item{\code{seJack}}{standard error of jacknife}
 #'  \item{\code{seBoot}}{standard error of bootstrap}
@@ -40,15 +50,20 @@
 ##'
 #' @return
 #' @author Kevin Shook
-#' @seealso \code{\link{read_hcdn}}
+#' @seealso \code{\link{read_CAMELS}}
 #' @export
 #' @importFrom utils txtProgressBar setTxtProgressBar
+#' @references N. Addor, A. Newman, M. Mizukami, and M. P. Clark, 2017. Catchment attributes
+#' for large-sample studies. Boulder, CO: UCAR/NCAR. \doi{10.5065/D6G73C3Q}
+#' @references Addor, N., Newman, A. J., Mizukami, N. and Clark, M. P.: The CAMELS data set:
+#' catchment attributes and meteorology for large-sample studies, Hydrol. Earth Syst. Sci., 21,
+#' 5293–5313, \doi{10.5194/hess-21-5293-2017, 2017.}
 #'
 #' @examples \dontrun{
-#' hcdn <- conus_hcdn_bootjack(hcdn_sites = sites, NetCDF_file = "results_hcdn_flow.nc")
+#' camels <- CAMELS_bootjack(CAMELS_sites = sites, NetCDF_file = "CAMELS_flow.nc")
 #' }
 #'
-conus_hcdn_bootjack <- function(hcdn_sites = NULL,
+CAMELS_bootjack <- function(CAMELS_sites = NULL,
                                 NetCDF_file = NULL,
                                 sim_var = "kge",
                                 GOF_stat = c("NSE", "KGE"),
@@ -66,13 +81,13 @@ conus_hcdn_bootjack <- function(hcdn_sites = NULL,
     stop("NetCDF file containing flows is required")
   }
 
-  if (is.null(hcdn_sites)) {
-    stop("HCDN sites data frame is required")
+  if (is.null(CAMELS_sites)) {
+    stop("CAMELS site data frame is required")
   }
 
   # loop through sites
 
-  num_sites <- nrow(hcdn_sites)
+  num_sites <- nrow(CAMELS_sites)
   if (!quiet)
     pb <- txtProgressBar(min = 1, max = num_sites, style = 3)
 
@@ -81,22 +96,22 @@ conus_hcdn_bootjack <- function(hcdn_sites = NULL,
       setTxtProgressBar(pb, i)
 
     # get data
-    hcdn_site <- hcdn_sites$hcdn_site[i]
-    hcdn_values <- read_hcdn(NetCDF_file, hcdn_site, obsName = "obs", simName = sim_var)
+    CAMELS_site <- CAMELS_sites$CAMELS_site[i]
+    CAMELS_values <- read_CAMELS(NetCDF_file, CAMELS_site, obsName = "obs", simName = sim_var)
     # do JAB
-    jab <- bootjack(hcdn_values, GOF_stat, nSample, waterYearMonth, startYear,
+    jab <- bootjack(CAMELS_values, GOF_stat, nSample, waterYearMonth, startYear,
                     endYear, minDays, minYears, returnSamples = FALSE, seed = seed,
                     bootYearFile = bootYearFile)
-    jab$hcdn_site <- hcdn_site
-    jab$lat <- hcdn_sites$lat[i]
-    jab$lon <- hcdn_sites$lon[i]
+    jab$CAMELS_site <- CAMELS_site
+    jab$lat <- CAMELS_sites$lat[i]
+    jab$lon <- CAMELS_sites$lon[i]
     if (i == 1) {
       all_jab <- jab
     } else {
       all_jab <- rbind(all_jab, jab)
     }
     rm(jab)
-    rm(hcdn_values)
+    rm(CAMELS_values)
   }
 
   # rearrange columns

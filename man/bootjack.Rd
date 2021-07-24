@@ -71,7 +71,7 @@ Bootstrap-jacknife of flow calibration statistics
 NSE_stats <- bootjack(flows_1030500, "NSE")
 }
 \seealso{
-\code{\link{read_hcdn}}
+\code{\link{read_CAMELS}}
 }
 \author{
 Kevin Shook

@@ -1,7 +1,7 @@
 #' Plots uncertainties in model error estimates
 #'
 #' @param JAB_stats Required. Data frame of jackknife after boot statistics for a large number
-#' of model runs, as produced by \code{conus_hcdn_bootjack}.
+#' of model runs, as produced by \code{CAMELS_bootjack}.
 #' @param fill_colour Optional. If \code{NULL} (the default), then all data series are plotted as lines.
 #' If specified, e.g.\code{fill_colour = "orange"}, the plot of 2 x the Jackknife estimate of the
 #' standard error will be filled with the specified colour.
@@ -10,7 +10,7 @@
 #' 2 x the Bootstrap estimate of the standard error are plotted as lines. The values of
 #' 2 x the Jackknife estimate of the standard error are plotted as filled)
 #' @author Kevin Shook
-#' @seealso \code{\link{conus_hcdn_bootjack}}
+#' @seealso \code{\link{CAMELS_bootjack}}
 #' @export
 #' @import ggplot2
 #' @import reshape2

@@ -34,7 +34,7 @@
 #' \code{seJab} = standard error of jackknife after bootstrap.)
 #'
 #' @author Kevin Shook
-#' @seealso \code{\link{read_hcdn}}
+#' @seealso \code{\link{read_CAMELS}}
 #' @export
 #' @importFrom stats cor median quantile runif sd var
 #' @import dplyr

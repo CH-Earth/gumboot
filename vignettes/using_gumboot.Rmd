@@ -112,11 +112,11 @@ ggplot(NSE_samples$statsBoot, aes(NSE)) +
 
 ## Multiple locations
 
-The function `conus_hcdn_bootjack()` applies `bootjack()` to model runs over the
+The function `CAMELS_bootjack()` applies `bootjack()` to model runs over the
 "CAMELS" catchments across the contiguous US (CONUS). The model runs are not supplied, and need to
 be stored in a NetCDF file.
 
-Newman et al. (2015) and Addor et al. (2017) provide details on the hydrometeorological and physiographical characteristics of the CAMELS catchments. The CAMELS catchments are those with minimal human disturbance (i.e., minimal land use changes or disturbances, minimal water withdrawals), and are hence almost exclusively smaller, headwater-type catchments (median basin size of 336 km2).
+Newman et al. (2015) and Addor et al. (2017) provide details on the hydrometeorological and physiographical characteristics of the CAMELS catchments. The CAMELS catchments are those with minimal human disturbance (i.e., minimal land use changes or disturbances, minimal water withdrawals), and are hence almost exclusively smaller, headwater-type catchments (median basin size of 336 km^2^).
 
 References:
 Addor, N., Newman, A.J., Mizukami, N. and Clark, M.P., 2017. The CAMELS data set: catchment attributes and meteorology for large-sample studies. Hydrology and Earth System Sciences, 21(10), pp.5293-5313

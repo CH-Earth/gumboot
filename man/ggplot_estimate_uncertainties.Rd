@@ -8,7 +8,7 @@ ggplot_estimate_uncertainties(JAB_stats, fill_colour = NULL)
 }
 \arguments{
 \item{JAB_stats}{Required. Data frame of jackknife after boot statistics for a large number
-of model runs, as produced by \code{conus_hcdn_bootjack}.}
+of model runs, as produced by \code{CAMELS_bootjack}.}
 
 \item{fill_colour}{Optional. If \code{NULL} (the default), then all data series are plotted as lines.
 If specified, e.g.\code{fill_colour = "orange"}, the plot of 2 x the Jackknife estimate of the
@@ -28,7 +28,7 @@ Plots uncertainties in model error estimates
 }
 }
 \seealso{
-\code{\link{conus_hcdn_bootjack}}
+\code{\link{CAMELS_bootjack}}
 }
 \author{
 Kevin Shook

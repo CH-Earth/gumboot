@@ -1,29 +1,29 @@
-#' Reads simulated and observed values from HCDN netcdf file for a single location
+#' Reads simulated and observed values from CAMELS netcdf file for a single location
 #'
-#' @param nc_file Required. netCDF file to read from.
-#' @param hcdn Required. Location to extract data.
+#' @param nc_file Required. netCDF file to read CAMELS data from.
+#' @param site Required. Site number to extract data.
 #' @param obsName Required. Name for variable containing observations. Default is "obs".
 #' @param simName Required. Name for variable containing simulations. Default is "kge".
 #'
 #' @return Returns a data frame containing the date, observed and simulated flows. The name of the
 #' observed flow variable is \code{obs}, the name of the simulated flow variable is \code{sim}.
 #' @author Kevin Shook
-#' @seealso \code{\link{conus_hcdn_bootjack}}
+#' @seealso \code{\link{CAMELS_bootjack}}
 #' @export
 #' @import ncdf4
 #' @import stringr
 #'
 #' @examples \dontrun{
-#' flows <- read_hcdn(nc_file = "results_hcdn_flow.nc", hcdn = 1030500)
+#' flows <- read_CAMELS(nc_file = "CAMELS_flow.nc", site = 1030500)
 #' }
-read_hcdn <- function(nc_file, hcdn, obsName = "obs", simName = "kge") {
+read_CAMELS <- function(nc_file, site, obsName = "obs", simName = "kge") {
 
   # check parameters
   if (is.null(nc_file)) {
     stop("NetCDF file containing flows is required")
   }
 
-  if (is.null(hcdn)) {
+  if (is.null(site)) {
     stop("location parameter is required")
   }
 
@@ -64,7 +64,7 @@ read_hcdn <- function(nc_file, hcdn, obsName = "obs", simName = "kge") {
   hcdn_values <- ncvar_get(nc, hcdnName)
 
   # find specified location
-  hcdn_loc <- which(hcdn_values == hcdn)
+  hcdn_loc <- which(hcdn_values == site)
 
   # get obs values for specified location
   start <- c(time = 1, hcdn = hcdn_loc)
