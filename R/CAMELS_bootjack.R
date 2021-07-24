@@ -57,7 +57,7 @@
 #' for large-sample studies. Boulder, CO: UCAR/NCAR. \doi{10.5065/D6G73C3Q}
 #' @references Addor, N., Newman, A. J., Mizukami, N. and Clark, M. P.: The CAMELS data set:
 #' catchment attributes and meteorology for large-sample studies, Hydrol. Earth Syst. Sci., 21,
-#' 5293–5313, \doi{10.5194/hess-21-5293-2017, 2017.}
+#' 5293–5313, \doi{10.5194/hess-21-5293-2017}, 2017.
 #'
 #' @examples \dontrun{
 #' camels <- CAMELS_bootjack(CAMELS_sites = sites, NetCDF_file = "CAMELS_flow.nc")

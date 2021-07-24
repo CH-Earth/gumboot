@@ -40,3 +40,7 @@ ggplot(NSE_samples$statsBoot, aes(NSE)) +
 #  nc_file <- "/home/kevin/data/projects/bootstrappR_test/hess2019/results_hcdn_flow.nc"
 #  CAMELS_stats <- CAMELS_bootjack(CAMELS_sites, nc_file)
 
+## ---- eval = FALSE------------------------------------------------------------
+#  CAMELS_stats_cleaned <- na.omit(CAMELS_stats)
+#  ggplot_estimate_uncertainties(CAMELS_stats_cleaned, fill_colour = "orange")
+

@@ -133,7 +133,7 @@ the data frame if you only wish to test some of the runs.
 the same values. Unless you tell it not to (setting `quiet = TRUE`) a progress
 bar will be displayed. 
 
-This command does the analyses for all of the CAMELS data, returning statistics
+This example does the analyses for all of the CAMELS data, returning statistics
 for runs which were optimised using NSE and KGE run targets, using both NSE and KGE 
 goodness of fit statistics.
 
@@ -142,4 +142,19 @@ CAMELS_sites <- hcdn_conus_sites
 nc_file <- "/home/kevin/data/projects/bootstrappR_test/hess2019/results_hcdn_flow.nc"
 CAMELS_stats <- CAMELS_bootjack(CAMELS_sites, nc_file)
 ```
+Having computed the statistics for all CAMELS basins, the uncertainties in the
+NSE and KGE values can be plotted using `ggplot_estimate_uncertainties()`, which
+returns a **ggplot2** plot object. 
+
+Because some of the CAMELS basins have data sets which do not meet the default
+criteria for `bootjack()`, they will return `NA_real_` values for their
+statistics. It is a good idea to first remove these stations from the data set before
+calling `ggplot_estimate_uncertainties()`, by using `na.omit()`.
+
+```{r, eval = FALSE}
+CAMELS_stats_cleaned <- na.omit(CAMELS_stats)
+ggplot_estimate_uncertainties(CAMELS_stats_cleaned, fill_colour = "orange")
+```
+![](CAMELS_plot.png)
+
 
