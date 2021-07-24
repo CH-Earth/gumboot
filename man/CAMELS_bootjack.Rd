@@ -16,13 +16,13 @@ CAMELS_bootjack(
   minDays = 100,
   minYears = 10,
   seed = NULL,
-  bootYearFile,
+  bootYearFile = NULL,
   quiet = FALSE
 )
 }
 \arguments{
-\item{CAMELS_sites}{Required. Data frame of CAMELS sites. Must contain a field called \option{CAMELS_site}. The data frame
-\code{CAMELS_sites} will work. You can subset this data frame if you want to use fewer sites.}
+\item{CAMELS_sites}{Required. Data frame of CAMELS sites. Must contain a field called \option{hcdn_site}. The data frame
+\code{hcdn_conus_sites} will work. You can subset this data frame if you want to use fewer sites.}
 
 \item{NetCDF_file}{Required. NetCDF file containing CAMELS modelled and gauged flows.}
 

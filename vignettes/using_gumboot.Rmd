@@ -27,6 +27,7 @@ The sampling uncertainty in the GOF estimates is quantified using a mixture of J
 
 References:
 Efron, B. and Gong, G., 1983. A leisurely look at the bootstrap, the jackknife, and cross-validation. The American Statistician, 37(1), pp.36-48.
+
 Efron, B., 1992. Jackknife‐after‐bootstrap standard errors and influence functions. Journal of the Royal Statistical Society: Series B (Methodological), 54(1), pp.83-111.
 
 ## How to use `gumboot`
@@ -119,6 +120,26 @@ be stored in a NetCDF file.
 Newman et al. (2015) and Addor et al. (2017) provide details on the hydrometeorological and physiographical characteristics of the CAMELS catchments. The CAMELS catchments are those with minimal human disturbance (i.e., minimal land use changes or disturbances, minimal water withdrawals), and are hence almost exclusively smaller, headwater-type catchments (median basin size of 336 km^2^).
 
 References:
-Addor, N., Newman, A.J., Mizukami, N. and Clark, M.P., 2017. The CAMELS data set: catchment attributes and meteorology for large-sample studies. Hydrology and Earth System Sciences, 21(10), pp.5293-5313
-Newman, A.J., Clark, M.P., Sampson, K., Wood, A., Hay, L.E., Bock, A., Viger, R.J., Blodgett, D., Brekke, L., Arnold, J.R. and Hopson, T., 2015. Development of a large-sample watershed-scale hydrometeorological data set for the contiguous USA: data set characteristics and assessment of regional variability in hydrologic model performance. Hydrology and Earth System Sciences, 19(1), p.209
+Addor, N., Newman, A.J., Mizukami, N. and Clark, M.P., 2017. The CAMELS data set: catchment attributes and meteorology for large-sample studies. Hydrology and Earth System Sciences, 21(10), pp.5293-5313.
+
+Newman, A.J., Clark, M.P., Sampson, K., Wood, A., Hay, L.E., Bock, A., Viger, R.J., Blodgett, D., Brekke, L., Arnold, J.R. and Hopson, T., 2015. Development of a large-sample watershed-scale hydrometeorological data set for the contiguous USA: data set characteristics and assessment of regional variability in hydrologic model performance. Hydrology and Earth System Sciences, 19(1), p.209.
+
+In addition to the NetCDF file containing the model runs `CAMELS_bootjack()` a
+data frame containing the site numbers and their latitudes and longitudes. This
+is contained in the supplied data frame `CAMELS_sites`. Note that you can subset
+the data frame if you only wish to test some of the runs.
+
+`CAMELS_bootjack()` has most of the same options as `bootjack()` and returns
+the same values. Unless you tell it not to (setting `quiet = TRUE`) a progress
+bar will be displayed. 
+
+This command does the analyses for all of the CAMELS data, returning statistics
+for runs which were optimised using NSE and KGE run targets, using both NSE and KGE 
+goodness of fit statistics.
+
+```{r, eval = FALSE}
+CAMELS_sites <- hcdn_conus_sites
+nc_file <- "/home/kevin/data/projects/bootstrappR_test/hess2019/results_hcdn_flow.nc"
+CAMELS_stats <- CAMELS_bootjack(CAMELS_sites, nc_file)
+```
 

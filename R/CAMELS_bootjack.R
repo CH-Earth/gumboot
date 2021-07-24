@@ -10,8 +10,8 @@
 #' The CAMELS data used for the large-domain model simulations are publicly available at the
 #' National Center for Atmospheric Research at \url{https://ral.ucar.edu/solutions/products/camels}.
 #'
-#' @param CAMELS_sites Required. Data frame of CAMELS sites. Must contain a field called \option{CAMELS_site}. The data frame
-#' \code{CAMELS_sites} will work. You can subset this data frame if you want to use fewer sites.
+#' @param CAMELS_sites Required. Data frame of CAMELS sites. Must contain a field called \option{hcdn_site}. The data frame
+#' \code{hcdn_conus_sites} will work. You can subset this data frame if you want to use fewer sites.
 #' @param NetCDF_file Required. NetCDF file containing CAMELS modelled and gauged flows.
 #' @param sim_var Required. Name of variable containing simulated flows in \code{NetCDF}.
 #' @param GOF_stat Required. Name(s) of simulation goodness of fit statistic(s) to be calculated. Currently both \code{NSE} and \code{KGE} are supported.
@@ -74,7 +74,7 @@ CAMELS_bootjack <- function(CAMELS_sites = NULL,
                                 minDays = 100,
                                 minYears = 10,
                                 seed = NULL,
-                                bootYearFile,
+                                bootYearFile=NULL,
                                 quiet = FALSE) {
   # check parameters
   if (is.null(NetCDF_file)) {
@@ -96,7 +96,7 @@ CAMELS_bootjack <- function(CAMELS_sites = NULL,
       setTxtProgressBar(pb, i)
 
     # get data
-    CAMELS_site <- CAMELS_sites$CAMELS_site[i]
+    CAMELS_site <- CAMELS_sites$hcdn_site[i]
     CAMELS_values <- read_CAMELS(NetCDF_file, CAMELS_site, obsName = "obs", simName = sim_var)
     # do JAB
     jab <- bootjack(CAMELS_values, GOF_stat, nSample, waterYearMonth, startYear,

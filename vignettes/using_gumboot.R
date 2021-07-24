@@ -35,3 +35,8 @@ ggplot(NSE_samples$statsBoot, aes(NSE)) +
   geom_histogram() +
   ggtitle("Bootstrap samples")
 
+## ---- eval = FALSE------------------------------------------------------------
+#  CAMELS_sites <- hcdn_conus_sites
+#  nc_file <- "/home/kevin/data/projects/bootstrappR_test/hess2019/results_hcdn_flow.nc"
+#  CAMELS_stats <- CAMELS_bootjack(CAMELS_sites, nc_file)
+
