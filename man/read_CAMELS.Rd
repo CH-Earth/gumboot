@@ -31,5 +31,5 @@ flows <- read_CAMELS(nc_file = "CAMELS_flow.nc", site = 1030500)
 \code{\link{CAMELS_bootjack}}
 }
 \author{
-Kevin Shook
+Martyn Clark and Kevin Shook
 }

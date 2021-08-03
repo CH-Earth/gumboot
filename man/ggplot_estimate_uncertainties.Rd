@@ -31,5 +31,5 @@ Plots uncertainties in model error estimates
 \code{\link{CAMELS_bootjack}}
 }
 \author{
-Kevin Shook
+Martyn Clark and Kevin Shook
 }

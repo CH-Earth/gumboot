@@ -9,7 +9,7 @@
 #' The confidence interval (difference between the 95^th^ and 5^th^ quantiles, and the value of
 #' 2 x the Bootstrap estimate of the standard error are plotted as lines. The values of
 #' 2 x the Jackknife estimate of the standard error are plotted as filled)
-#' @author Kevin Shook
+#' @author Martyn Clark and Kevin Shook
 #' @seealso \code{\link{CAMELS_bootjack}}
 #' @export
 #' @import ggplot2

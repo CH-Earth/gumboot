@@ -7,7 +7,7 @@
 #'
 #' @return Returns a data frame containing the date, observed and simulated flows. The name of the
 #' observed flow variable is \code{obs}, the name of the simulated flow variable is \code{sim}.
-#' @author Kevin Shook
+#' @author Martyn Clark and Kevin Shook
 #' @seealso \code{\link{CAMELS_bootjack}}
 #' @export
 #' @import ncdf4

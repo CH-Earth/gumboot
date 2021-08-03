@@ -74,5 +74,5 @@ NSE_stats <- bootjack(flows_1030500, "NSE")
 \code{\link{read_CAMELS}}
 }
 \author{
-Kevin Shook
+Martyn Clark and Kevin Shook
 }

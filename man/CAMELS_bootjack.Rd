@@ -103,5 +103,5 @@ catchment attributes and meteorology for large-sample studies, Hydrol. Earth Sys
 \code{\link{read_CAMELS}}
 }
 \author{
-Kevin Shook
+Martyn Clark and Kevin Shook
 }

@@ -49,7 +49,7 @@
 ##' }
 ##'
 #' @return
-#' @author Kevin Shook
+#' @author Martyn Clark and Kevin Shook
 #' @seealso \code{\link{read_CAMELS}}
 #' @export
 #' @importFrom utils txtProgressBar setTxtProgressBar

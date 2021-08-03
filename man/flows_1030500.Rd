@@ -16,6 +16,6 @@ A data frame with 6940 rows and 3 variables:
 flows_1030500
 }
 \description{
-A data frame observed and simulated flows for USGS site 1030500
+A data frame containing observed and simulated flows for USGS site 1030500
 }
 \keyword{datasets}
