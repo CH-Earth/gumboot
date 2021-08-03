@@ -27,11 +27,11 @@
 #' file as a table with the dimensions of years x nSample. If a file is specified,
 #' and it _does_ exist, then the years will be read in, and used for the bootstrapping.
 #' @return Returns a data frame containing the goodness of fit statistic name
-#' (i.e. \option{NSE} and/or \option{KGE}, and \code{seJack} = standard error of
+#' (i.e. \option{NSE} and/or \option{KGE}), and \code{seJack} = standard error of
 #' jacknife, \code{seBoot} = standard error of bootstrap, \code{p05, p50, p95},
 #' the 5th, 50th and 95th percentiles of the estimates, \code{score} = jackknife
 #' score, \code{biasJack} = bias of jackknife, \code{biasBoot} = bias of bootstap,
-#' \code{seJab} = standard error of jackknife after bootstrap.)
+#' \code{seJab} = standard error of jackknife after bootstrap.
 #'
 #' @author Martyn Clark and Kevin Shook
 #' @seealso \code{\link{read_CAMELS}}
