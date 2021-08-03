@@ -16,7 +16,7 @@ melted <- melt(flows_1030500, id.vars = "date")
 ggplot(melted, aes(date, value, colour = variable)) +
   geom_line() +
   xlab("") +
-  ylab("Daily streamflow (m³/s)") 
+  labs(y = bquote('Daily streamflow'~(m^3/s)), x = "")
 
 ## -----------------------------------------------------------------------------
 NSE_values <- bootjack(flows_1030500, GOF_stat = "NSE")
