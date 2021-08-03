@@ -5,7 +5,7 @@
 \alias{gumboot-package}
 \title{Bootstrap Analyses of Hydrological Model Error}
 \description{
-gumboot is an R package which does jackknife after bootstrap analyses of the error in hydrological models by
+Does jackknife after bootstrap analyses of the error in hydrological models by
 estimating the empirical probability distributions of NSE (Nash-Sutcliffe efficiency) and KGE (Kling-Gupta efficiency)
 estimators.
 }
@@ -20,9 +20,7 @@ The package code is described in: \cr
  \cite{Clark et al. (2021) "The abuse of popular performance metrics in hydrologic modeling", _Water Resources Research_, <doi:10.1029/2020WR029001>}
 }
 \author{
-\strong{Coded by:} Kevin Shook  and...
+\strong{Coded by:} Martyn Clark and Kevin Shook
 
-\strong{Conceptual design by:} Martyn Clark
-
-\strong{Maintained by:} Guoqiang Tang \email{guoqiang.tang@usask.ca}
+\strong{Maintained by:} Kevin Shook \email{kevin.shook@usask.ca}
 }

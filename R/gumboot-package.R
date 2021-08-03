@@ -8,7 +8,7 @@
 #' estimators.
 #'
 #' @author \strong{Coded by:} Martyn Clark and Kevin Shook
-#' @author \strong{Maintained by:} Kevin Shook \email{krs350@mail.usask.ca}
+#' @author \strong{Maintained by:} Kevin Shook \email{kevin.shook@usask.ca}
 #'
 #' @section Funding:
 #'
