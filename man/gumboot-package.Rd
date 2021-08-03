@@ -17,7 +17,7 @@ The package was partly funded by the Global institute for Water Security (GIWS; 
 
 \references{
 The package code is described in: \cr
- \cite{Clark, M.P, et al. 2020. "The abuse of popular performance metrics in hydrologic modeling",  doi:10.1029/2020WR029001}
+ \cite{Clark et al. (2021) "The abuse of popular performance metrics in hydrologic modeling", _Water Resources Research_, <doi:10.1029/2020WR029001>}
 }
 \author{
 \strong{Coded by:} Kevin Shook  and...

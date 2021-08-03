@@ -3,13 +3,12 @@
 #' @name gumboot-package
 #'
 #' @description
-#' gumboot is an R package which does jackknife after bootstrap analyses of the error in hydrological models by
+#' Does jackknife after bootstrap analyses of the error in hydrological models by
 #' estimating the empirical probability distributions of NSE (Nash-Sutcliffe efficiency) and KGE (Kling-Gupta efficiency)
 #' estimators.
 #'
-#' @author \strong{Coded by:} Kevin Shook  and...
-#' @author \strong{Conceptual design by:} Martyn Clark
-#' @author \strong{Maintained by:} Guoqiang Tang \email{guoqiang.tang@usask.ca}
+#' @author \strong{Coded by:} Martyn Clark and Kevin Shook
+#' @author \strong{Maintained by:} Kevin Shook \email{krs350@mail.usask.ca}
 #'
 #' @section Funding:
 #'
