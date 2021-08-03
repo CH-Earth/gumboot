@@ -16,7 +16,7 @@
 #' The package was partly funded by the Global institute for Water Security (GIWS; \href{https://water.usask.ca/}{https://water.usask.ca/}) and the Global Water Futures (GWF; \href{https://gwf.usask.ca/}{https://gwf.usask.ca/}) program.
 #' @references
 #'  The package code is described in: \cr
-#'  \cite{Clark, M.P, et al. 2020. "The abuse of popular performance metrics in hydrologic modeling",  doi:10.1029/2020WR029001}
+#'  \cite{Clark et al. (2021) "The abuse of popular performance metrics in hydrologic modeling", _Water Resources Research_, <doi:10.1029/2020WR029001>}
 #'
 #' @import dplyr hydroGOF ggplot2 lubridate stringr ncdf4
 NULL
