@@ -58,7 +58,7 @@ it is not.}
 }
 \value{
 Returns a data frame containing the following variables:
-\itemize{
+\describe{
  \item{\code{CAMELS_site}}{CAMELS site number}
  \item{\code{lat}}{CAMELS site latitude}
  \item{\code{lon}}{CAMELS site longitude}

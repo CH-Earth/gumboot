@@ -14,6 +14,6 @@
 #' data network 2009 (HCDN-2009). U.S. Geological Survey Fact Sheet 2012-3047.
 #' Retrieved from \url{https://pubs.usgs.gov/fs/2012/3047/}.
 #' The data can be downloaded at
-#' \url{https://www.sciencebase.gov/catalog/item/631405c3d34e36012efa3152}.
+#' \doi{10.5066/P9HP0WFJ}.
 
 "hcdn_conus_sites"
