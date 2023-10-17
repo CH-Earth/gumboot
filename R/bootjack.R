@@ -38,7 +38,6 @@
 #' @export
 #' @importFrom stats cor median quantile runif sd var
 #' @import dplyr
-#' @import hydroGOF
 #' @importFrom stringr str_detect
 #' @importFrom utils read.csv write.table
 #'
@@ -247,7 +246,6 @@ bootjack <- function(flows,
       yBeta = (meanObs - meanSim)/sqrt(varObs)
       alpha = sqrt(varSim)/sqrt(varObs)
       nse   = 2*alpha*rProd - yBeta^2 - alpha^2
-      #nse <- NSE(qSimValid, qObsValid)
 
       # save statistics
       if (samplingStrategy[iStrategy] == 'jack')
@@ -262,7 +260,6 @@ bootjack <- function(flows,
       yBeta <-  (meanObs - meanSim)/sqrt(varObs)
       alpha <-  sqrt(varSim)/sqrt(varObs)
       kge <- 1 - sqrt( (xBeta - 1)^2 + (alpha - 1)^2 + (rProd - 1)^2)
-     # kge <- KGE(qSimValid, qObsValid)
 
       # save statistics
       if (samplingStrategy[iStrategy] == 'jack')

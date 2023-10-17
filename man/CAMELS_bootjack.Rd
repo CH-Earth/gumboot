@@ -71,8 +71,6 @@ Returns a data frame containing the following variables:
  \item{\code{biasBoot}}{the bias of the bootstrap}
  \item{\code{seJab}}{the standard error of the jackknife after bootstrap}
 }
-
-
 }
 \description{
 Hydrologic model simulations can be produced using input-response data

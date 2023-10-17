@@ -17,6 +17,6 @@
 #'  The package code is described in: \cr
 #'  \cite{Clark et al. (2021), "The abuse of popular performance metrics in hydrologic modeling", Water Resources Research, <doi:10.1029/2020WR029001>.}
 #'
-#' @import dplyr hydroGOF ggplot2 lubridate stringr ncdf4
+#' @import dplyr ggplot2 lubridate stringr ncdf4
 NULL
 

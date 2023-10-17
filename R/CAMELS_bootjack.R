@@ -46,9 +46,7 @@
 #'  \item{\code{biasJack}}{the bias of the jackknife}
 #'  \item{\code{biasBoot}}{the bias of the bootstrap}
 #'  \item{\code{seJab}}{the standard error of the jackknife after bootstrap}
-##' }
-##'
-#' @return
+#' }
 #' @author Martyn Clark and Kevin Shook
 #' @seealso \code{\link{read_CAMELS}}
 #' @export

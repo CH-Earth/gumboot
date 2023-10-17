@@ -1,7 +1,7 @@
 Package: gumboot
 Type: Package
 Title: Bootstrap Analyses of Sampling Uncertainty in Goodness-of-Fit Statistics
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(person("Martyn", "Clark", role = c("aut")),
               person("Kevin", "Shook", role = c("aut", "trl", "cre"),
                      email = "kevin.shook@usask.ca"))
@@ -12,9 +12,9 @@ Description: Uses jackknife and bootstrap methods to quantify the sampling uncer
 License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 4.0)
-Imports: stats, dplyr, hydroGOF, ggplot2, lubridate, stringr, ncdf4, reshape2
+Imports: stats, dplyr, ggplot2, lubridate, stringr, ncdf4, reshape2
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Suggests: 
     testthat,
     knitr,
