@@ -2,6 +2,7 @@
 % Please edit documentation in R/gumboot-package.R
 \docType{package}
 \name{gumboot-package}
+\alias{gumboot}
 \alias{gumboot-package}
 \title{Bootstrap Analyses of Hydrological Model Error}
 \description{
@@ -24,3 +25,4 @@ The package code is described in: \cr
 
 \strong{Maintained by:} Kevin Shook \email{kevin.shook@usask.ca}
 }
+\keyword{package}
